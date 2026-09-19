@@ -1150,3 +1150,50 @@ body {
   .control-center-actions,
   .control-center-popover > .control-center-focus { animation: none; }
 }
+
+/* A shallow frosted veil keeps the full-width system bar legible while the
+   page scrolls underneath it. The mask fades out at the bar's lower edge. */
+.system-bar-layer::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: 40px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(20, 20, 22, .24), rgba(20, 20, 22, .04));
+  backdrop-filter: blur(14px) saturate(125%);
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, .62) 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, .62) 78%, transparent 100%);
+}
+.light .system-bar-layer::before {
+  background: linear-gradient(to bottom, rgba(248, 248, 250, .38), rgba(248, 248, 250, .06));
+}
+header.system-bar { z-index: 1; }
+
+/* At compact desktop widths a five-column rail makes the 1×1 widget too
+   small. Switch only the top composition to four columns and a third row. */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .top-grid {
+    --flow-unit: calc((100cqi - 3 * var(--flow-gap)) / 4);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(3, var(--flow-unit));
+  }
+  .top-grid > .hero {
+    grid-column: 1 / -1;
+    grid-row: span 2;
+  }
+  .top-grid > .top-widgets {
+    grid-column: span 1;
+    grid-row: span 1;
+    height: var(--flow-unit);
+  }
+  .focus-mode .top-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(2, var(--flow-unit));
+  }
+  .focus-mode .top-grid > .hero {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+  }
+}
