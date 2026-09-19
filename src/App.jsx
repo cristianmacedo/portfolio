@@ -78,7 +78,7 @@ function SectionHeading({ id, title, caption }) {
 
 function WorkSection({ t, onDetails }) {
   return (
-    <>
+    <section className="work-section" aria-labelledby="work">
       <SectionHeading id="work" title={t.selectedWork} caption={t.workCaption} />
       <div className="bento">
         <article className="card featured">
@@ -102,7 +102,7 @@ function WorkSection({ t, onDetails }) {
           <div className="personal"><span>{t.outside}</span><p>{t.outsideCopy}</p></div>
         </article>
       </div>
-    </>
+    </section>
   );
 }
 

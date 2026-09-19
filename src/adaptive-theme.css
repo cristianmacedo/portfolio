@@ -926,3 +926,76 @@ dialog .close .sf-symbol { width: 18px; height: 18px; }
 @media (max-width: 900px) {
   .top-widgets .reminders-widget { max-height: calc(100vh - 88px); }
 }
+
+/* The desktop flow uses the reminders widget as one square grid unit. */
+.shell {
+  max-width: 1504px;
+  container-type: inline-size;
+}
+.work-section { view-transition-name: selected-work; }
+.focus-mode .work-section { display: none; }
+
+::view-transition-old(selected-work) { animation: focus-fade-out .24s ease both; }
+::view-transition-new(selected-work) { animation: focus-fade-in .34s .12s ease both; }
+
+@media (min-width: 901px) {
+  .top-grid {
+    --flow-gap: 16px;
+    --flow-unit: calc((100cqi - 4 * var(--flow-gap)) / 5);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: repeat(2, var(--flow-unit));
+    gap: var(--flow-gap);
+    align-items: stretch;
+  }
+  .top-grid > .hero {
+    grid-column: span 4;
+    grid-row: span 2;
+    min-height: 0;
+    height: 100%;
+  }
+  .top-grid > .top-widgets {
+    grid-column: span 1;
+    grid-row: span 1;
+    width: 100%;
+    height: var(--flow-unit);
+    min-height: 0;
+  }
+  .top-widgets .reminders-widget {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 1;
+    padding: 12px 16px 8px;
+  }
+  .top-widgets .reminders-widget .reminders-header {
+    padding-bottom: 8px;
+  }
+  .top-widgets .reminders-widget .reminders-header strong {
+    font-size: 32px;
+  }
+  .top-widgets .reminders-widget .reminders-header span:not(.reminders-app-icon) {
+    margin-top: 1px;
+    font-size: 15px;
+  }
+  .top-widgets .reminders-widget .reminders-app-icon {
+    width: 31px;
+    height: 31px;
+  }
+  .top-widgets .reminders-widget .reminders-list li {
+    min-height: 0;
+  }
+  .top-widgets .reminders-widget .reminders-list li > div {
+    padding: 7px 0;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+  .focus-mode .top-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: repeat(2, var(--flow-unit));
+  }
+  .focus-mode .top-grid > .hero {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+  }
+}
