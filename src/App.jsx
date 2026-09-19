@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import translations from './translations.json';
 import SystemBar from './components/system/SystemBar';
 import SfSymbol from './components/SfSymbol';
+import BrandIcon from './components/BrandIcon';
 
 const FRAME_IDS = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12];
 
@@ -42,8 +43,8 @@ function ControlPanel({ t, language, isLight, focusMode, onLanguage, onTheme, on
       <div className="control-grid" aria-label="Quick controls">
         <button className="language control-tile" type="button" onClick={onLanguage} aria-label={t.languageLabel} title="Language"><span className="control-icon">文A</span><span className="sr-only">{language === 'pt' ? 'EN' : 'PT'}</span></button>
         <button className="theme control-tile" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']} title={t[isLight ? 'themeDark' : 'themeLight']}><span className="control-icon">◐</span><span className="sr-only">{t[isLight ? 'themeValueLight' : 'themeValueDark']}</span></button>
-        <a className="control-tile" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><SfSymbol name="chevron.left.forwardslash.chevron.right" /></a>
-        <a className="control-tile linkedin-control" href="https://www.linkedin.com/in/cristian-macedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><span aria-hidden="true">in</span></a>
+        <a className="control-tile" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><BrandIcon name="github" /></a>
+        <a className="control-tile linkedin-control" href="https://www.linkedin.com/in/cristian-macedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><BrandIcon name="linkedin" /></a>
       </div>
       <button className="focus-toggle" type="button" aria-pressed={focusMode} aria-label={t[focusMode ? 'focusDisable' : 'focusEnable']} title={t[focusMode ? 'focusDisable' : 'focusEnable']} onClick={onFocus}>
         <span className="focus-badge" aria-hidden="true">−</span><FocusIcon />

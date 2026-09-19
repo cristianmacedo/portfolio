@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import SfSymbol from '../SfSymbol';
+import BrandIcon from '../BrandIcon';
 
 function FocusIcon() {
   return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
@@ -22,10 +23,10 @@ function ControlCenter({ t, language, isLight, focusMode, onLanguage, onTheme, o
 
   return <div className="control-center-popover" role="dialog" aria-label={t.controlCenter} ref={panelRef}>
     <div className="control-center-actions">
-      <button className="system-control" type="button" onClick={onLanguage} aria-label={t.languageLabel} title={`${t.languageControl}: ${language === 'pt' ? 'Português' : 'English'}`}><SfSymbol name="translate" /></button>
+      <button className="system-control" type="button" onClick={onLanguage} aria-label={t.languageLabel} title={`${t.languageControl}: ${language === 'pt' ? 'Português' : 'English'}`}><SfSymbol name="translate" className="translate-symbol" /></button>
       <button className="system-control" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']} title={`${t.themeControl}: ${t[isLight ? 'themeValueLight' : 'themeValueDark']}`}><SfSymbol name="circle.lefthalf.filled" /></button>
-      <a className="system-control" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><SfSymbol name="chevron.left.forwardslash.chevron.right" /></a>
-      <a className="system-control" href="https://www.linkedin.com/in/cristianmacedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><SfSymbol name="person.crop.circle" /></a>
+      <a className="system-control" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><BrandIcon name="github" /></a>
+      <a className="system-control" href="https://www.linkedin.com/in/cristianmacedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><BrandIcon name="linkedin" /></a>
     </div>
     <button className="control-center-focus" type="button" aria-pressed={focusMode} onClick={onFocus}>
       <FocusIcon /><span><strong>{t.focusTitle}</strong><small>{t[focusMode ? 'focusStatusOn' : 'focusStatusOff']}</small></span>
