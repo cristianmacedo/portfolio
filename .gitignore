@@ -1,0 +1,6 @@
+node_modules/
+react-dist/
+legacy-static/
+.vscode/
+.DS_Store
+**/.DS_Store
