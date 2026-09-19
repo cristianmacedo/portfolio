@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "icons:sf": "npx sf-symbols-svg --weight regular --icons-list scripts/sf-symbols-icons.txt --output public/assets/sf-symbols"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

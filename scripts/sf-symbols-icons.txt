@@ -1,0 +1,14 @@
+arrow.down
+arrow.up.right
+asterisk
+bitcoinsign.circle
+book.closed
+chart.xyaxis.line
+chevron.left.forwardslash.chevron.right
+circle.lefthalf.filled
+command
+dollarsign
+person.text.rectangle
+switch.2
+translate
+xmark
