@@ -851,3 +851,66 @@ header.system-bar,
 .contact-actions button .sf-symbol { width: 17px; height: 17px; }
 dialog .close { display: grid; place-items: center; width: 38px; height: 38px; }
 dialog .close .sf-symbol { width: 18px; height: 18px; }
+
+/* Final spacing and material adjustments for the system controls and hero widgets. */
+.system-clock { font-size: 14px; }
+.system-control::before,
+.control-center-focus::before { display: none; }
+.system-control,
+.control-center-focus {
+  box-shadow: 0 12px 30px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.light .system-control,
+.light .control-center-focus {
+  box-shadow: 0 12px 30px rgba(55,44,37,.13), inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.top-grid .hero .hero-bottom { border-top: 0; }
+
+.top-widgets { container-type: inline-size; }
+.top-widgets .reminders-widget {
+  height: fit-content;
+  min-height: 100cqi;
+  max-height: 100%;
+  padding: 16px 20px 12px;
+  display: flex;
+  flex-direction: column;
+}
+.top-widgets .reminders-widget .reminders-header {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0 0 14px;
+  border-bottom: 1px solid rgba(255,255,255,.38);
+}
+.light .top-widgets .reminders-widget .reminders-header {
+  border-bottom-color: rgba(35,36,40,.24);
+}
+.top-widgets .reminders-widget .reminders-header strong {
+  font-size: 40px;
+  line-height: 1;
+}
+.top-widgets .reminders-widget .reminders-header span:not(.reminders-app-icon) {
+  margin-top: 3px;
+  color: var(--orange);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.25px;
+}
+.top-widgets .reminders-widget .reminders-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.20) transparent;
+}
+.top-widgets .reminders-widget .reminders-list li + li > div {
+  border-top-color: rgba(255,255,255,.16);
+}
+.light .top-widgets .reminders-widget .reminders-list li + li > div {
+  border-top-color: rgba(35,36,40,.13);
+}
+@media (max-width: 900px) {
+  .top-widgets .reminders-widget { max-height: calc(100vh - 88px); }
+}
