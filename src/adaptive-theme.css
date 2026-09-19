@@ -1100,3 +1100,53 @@ body {
   background-size: 32px 32px, 32px 32px, auto, auto, auto;
   background-attachment: fixed;
 }
+
+/* Chromium must not receive an opacity/filter Backdrop Root between the page
+   and the independently filtered Control Center buttons. */
+.control-center-popover {
+  isolation: auto;
+  animation: control-center-enter .2s cubic-bezier(.2, .75, .2, 1) both;
+}
+.system-control,
+.control-center-focus { isolation: auto; }
+
+@keyframes control-center-enter {
+  from { transform: translateY(-5px) scale(.96); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control-center-popover { animation: none; }
+}
+
+/* The Control Center has no visual container. `display: contents` also keeps
+   Chromium from inserting an intermediate compositing surface around its
+   independently filtered controls. */
+.control-center-popover {
+  display: contents;
+  animation: none;
+}
+.control-center-actions {
+  position: fixed;
+  top: 50px;
+  right: 16px;
+  z-index: 2147483647;
+  animation: control-center-enter .2s cubic-bezier(.2, .75, .2, 1) both;
+}
+.control-center-popover > .control-center-focus {
+  position: fixed;
+  top: 120px;
+  right: 16px;
+  z-index: 2147483647;
+  margin: 0;
+  animation: control-center-enter .22s .025s cubic-bezier(.2, .75, .2, 1) both;
+}
+
+@media (max-width: 650px) {
+  .control-center-actions,
+  .control-center-popover > .control-center-focus { right: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control-center-actions,
+  .control-center-popover > .control-center-focus { animation: none; }
+}
