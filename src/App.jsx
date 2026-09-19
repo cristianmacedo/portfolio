@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import translations from './translations.json';
 import SystemBar from './components/system/SystemBar';
 import SfSymbol from './components/SfSymbol';
-import LiquidGlassFilter from './components/LiquidGlassFilter';
 
 const FRAME_IDS = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12];
 
@@ -275,7 +274,6 @@ export default function App() {
   };
 
   return <>
-    <LiquidGlassFilter />
     <a className="skip" href="#work">{t.skip}</a>
     <SystemBar t={t} language={language} isLight={isLight} focusMode={focusMode} activeSection={activeSection} onLanguage={() => setLanguage((value) => value === 'en' ? 'pt' : 'en')} onTheme={changeTheme} onFocus={changeFocus} />
     <div className="shell">
