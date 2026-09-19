@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import translations from './translations.json';
 import SystemBar from './components/system/SystemBar';
+import SfSymbol from './components/SfSymbol';
 
 const FRAME_IDS = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12];
 
@@ -18,13 +19,13 @@ function Hero({ t }) {
       <div className="hero-copy">
         <Rich as="h1" html={t.heroTitle} />
         <p className="intro">{t.heroIntro}</p>
-        <a className="primary" href="#journey"><span>{t.seeJourney}</span><span>↓</span></a>
+        <a className="primary" href="#journey"><span>{t.seeJourney}</span><SfSymbol name="arrow.down" /></a>
         <a className="text-link" href={`${import.meta.env.BASE_URL}assets/cristian-macedo-resume.pdf`} target="_blank" rel="noopener">{t.resume}</a>
       </div>
       <div className="portrait">
         <div className="orbit" />
         <span className="portrait-sprite" role="img" aria-label={t.avatarAlt} />
-        <span className="portrait-note"><span>{t.hello}</span> <b>✳</b></span>
+        <span className="portrait-note"><span>{t.hello}</span><SfSymbol name="asterisk" /></span>
       </div>
       <div className="hero-bottom"><span>{t.based}</span><span>React <i>·</i> TypeScript <i>·</i> Microfrontends</span></div>
     </section>
@@ -32,7 +33,7 @@ function Hero({ t }) {
 }
 
 function FocusIcon() {
-  return <span className="focus-icon" aria-hidden="true"><span className="focus-id"><i /></span></span>;
+  return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
 }
 
 function ControlPanel({ t, language, isLight, focusMode, onLanguage, onTheme, onFocus }) {
@@ -41,7 +42,7 @@ function ControlPanel({ t, language, isLight, focusMode, onLanguage, onTheme, on
       <div className="control-grid" aria-label="Quick controls">
         <button className="language control-tile" type="button" onClick={onLanguage} aria-label={t.languageLabel} title="Language"><span className="control-icon">文A</span><span className="sr-only">{language === 'pt' ? 'EN' : 'PT'}</span></button>
         <button className="theme control-tile" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']} title={t[isLight ? 'themeDark' : 'themeLight']}><span className="control-icon">◐</span><span className="sr-only">{t[isLight ? 'themeValueLight' : 'themeValueDark']}</span></button>
-        <a className="control-tile" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg></a>
+        <a className="control-tile" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><SfSymbol name="chevron.left.forwardslash.chevron.right" /></a>
         <a className="control-tile linkedin-control" href="https://www.linkedin.com/in/cristian-macedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><span aria-hidden="true">in</span></a>
       </div>
       <button className="focus-toggle" type="button" aria-pressed={focusMode} aria-label={t[focusMode ? 'focusDisable' : 'focusEnable']} title={t[focusMode ? 'focusDisable' : 'focusEnable']} onClick={onFocus}>
@@ -87,13 +88,13 @@ function WorkSection({ t, onDetails }) {
             <div><span>{t.scopePlatform}</span><p>{t.scopePlatformCopy}</p></div>
             <div><span>{t.scopeTeam}</span><p>{t.scopeTeamCopy}</p></div>
           </div>
-          <button className="card-link" onClick={onDetails}><span>{t.insideWork}</span><b>↗</b></button>
+          <button className="card-link" onClick={onDetails}><span>{t.insideWork}</span><SfSymbol name="arrow.up.right" /></button>
         </article>
         <aside className="card now">
-          <div className="card-top"><span className="eyebrow">{t.currentLabel}</span><span className="tiny-mark">↗</span></div>
+          <div className="card-top"><span className="eyebrow">{t.currentLabel}</span><SfSymbol name="arrow.up.right" className="tiny-mark" /></div>
           <span className="bubble-label from-them">{t.currentQuestion}</span>
           <div className="message-wrap"><div className="message from-me">{t.currentMessage}</div></div>
-          <p>{t.currentCopy}</p><div className="now-bottom"><span className="mini-icon">⌘</span><Rich html={t.currentFoot} /></div>
+          <p>{t.currentCopy}</p><div className="now-bottom"><span className="mini-icon"><SfSymbol name="command" /></span><Rich html={t.currentFoot} /></div>
         </aside>
         <article className="card about" id="about">
           <span className="eyebrow">{t.aboutLabel}</span><Rich as="h3" html={t.aboutTitle} /><p>{t.aboutCopy}</p>
@@ -105,11 +106,11 @@ function WorkSection({ t, onDetails }) {
 }
 
 const projects = [
-  { name: 'Senalytics', href: 'https://github.com/cristianmacedo/senalytics', icon: '06', tech: 'REACT 19 · TYPESCRIPT · DATA', copy: 'senalyticsCopy', detail: 'senalyticsDetail', foot: 'Vite · React Query · Recharts', featured: true, iconClass: 'lottery' },
-  { name: 'PrettyGit', href: 'https://github.com/cristianmacedo/prettygit', icon: '🐙', copy: 'prettygitCopy', pretty: true },
-  { name: 'SpendBox', href: 'https://github.com/cristianmacedo/spendbox', icon: '$', tech: 'NEXT.JS · ZUSTAND', copy: 'spendboxShort' },
-  { name: 'Openbook', icon: '◎', tech: 'VUE · NODE.JS', copy: 'openbookCopy', archived: true },
-  { name: 'OhNoCoiner', href: 'https://github.com/cristianmacedo/ohnocoiner', icon: '₿', tech: 'REACT · COINDESK API', copy: 'ohnocoinerCopy' },
+  { name: 'Senalytics', href: 'https://github.com/cristianmacedo/senalytics', icon: 'chart.xyaxis.line', tech: 'REACT 19 · TYPESCRIPT · DATA', copy: 'senalyticsCopy', detail: 'senalyticsDetail', foot: 'Vite · React Query · Recharts', featured: true },
+  { name: 'PrettyGit', href: 'https://github.com/cristianmacedo/prettygit', icon: 'chevron.left.forwardslash.chevron.right', copy: 'prettygitCopy', pretty: true },
+  { name: 'SpendBox', href: 'https://github.com/cristianmacedo/spendbox', icon: 'dollarsign', tech: 'NEXT.JS · ZUSTAND', copy: 'spendboxShort' },
+  { name: 'Openbook', icon: 'book.closed', tech: 'VUE · NODE.JS', copy: 'openbookCopy', archived: true },
+  { name: 'OhNoCoiner', href: 'https://github.com/cristianmacedo/ohnocoiner', icon: 'bitcoinsign.circle', tech: 'REACT · COINDESK API', copy: 'ohnocoinerCopy' },
 ];
 
 function Projects({ t }) {
@@ -120,7 +121,7 @@ function Projects({ t }) {
         {projects.map((project) => {
           const Tag = project.href ? 'a' : 'article';
           return <Tag key={project.name} className={`card side-project${project.featured ? ' side-project-featured' : ''}${project.pretty ? ' prettygit-card' : ''}${project.archived ? ' archived-project' : ''}`} href={project.href} target={project.href ? '_blank' : undefined} rel={project.href ? 'noopener' : undefined}>
-            <div className="side-project-top"><span className={`project-icon ${project.iconClass || ''}`}>{project.icon}</span>{project.tech && <span className="eyebrow">{project.tech}</span>}{project.archived ? <span className="project-status">{t.collegeProject}</span> : <span className="project-arrow">↗</span>}</div>
+            <div className="side-project-top"><span className="project-icon"><SfSymbol name={project.icon} /></span>{project.tech && <span className="eyebrow">{project.tech}</span>}{project.archived ? <span className="project-status">{t.collegeProject}</span> : <SfSymbol name="arrow.up.right" className="project-arrow" />}</div>
             <div><h3>{project.name}</h3><p>{t[project.copy]}</p></div>
             {project.detail && <div className="project-detail"><span>{t[project.detail]}</span><span>{project.foot}</span></div>}
             {project.pretty && <div className="prettygit-preview"><span>Pull Request</span><code>&lt;blockquote&gt;…&lt;/blockquote&gt;</code><b>{t.copySnippet}</b></div>}
@@ -137,7 +138,7 @@ function TimelineEntry({ date, duration, company, place, role, summary, bullets,
     <div className="timeline-content"><div className="timeline-company"><h3>{company}</h3><span>{place}</span></div><h4>{role}</h4><p>{summary}</p>
       {bullets && <ul>{bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
       {tech && <div className="tech-list">{tech.map((item) => <span key={item}>{item}</span>)}</div>}
-      {education && <div className="education-note"><span>⌘</span><span>{education}</span></div>}
+      {education && <div className="education-note"><SfSymbol name="command" /><span>{education}</span></div>}
     </div>
   </li>;
 }
@@ -163,8 +164,8 @@ function Utility({ t, language }) {
   };
   useEffect(() => setCopyStatus(''), [language]);
   return <div className="utility-grid">
-    <article className="card approach"><span className="eyebrow">{t.thinkingLabel}</span><span className="asterisk" aria-hidden="true">✳</span><Rich as="h3" html={t.thinkingTitle} /><p>{t.thinkingCopy}</p><div className="ai-practice"><span>{t.aiLabel}</span><p>{t.aiCopy}</p></div></article>
-    <article className="card contact"><span className="eyebrow">{t.helloLabel}</span><Rich as="h3" html={t.contactTitle} /><div className="contact-actions"><a href="mailto:cristian.silvadk22@gmail.com">{t.sendEmail}</a><button id="copy" onClick={copyEmail} aria-label={t.copyLabel} title={t.copyLabel}><span aria-hidden="true">⧉</span></button></div><p id="copy-status" role="status">{copyStatus}</p></article>
+    <article className="card approach"><span className="eyebrow">{t.thinkingLabel}</span><SfSymbol name="asterisk" className="asterisk" /><Rich as="h3" html={t.thinkingTitle} /><p>{t.thinkingCopy}</p><div className="ai-practice"><span>{t.aiLabel}</span><p>{t.aiCopy}</p></div></article>
+    <article className="card contact"><span className="eyebrow">{t.helloLabel}</span><Rich as="h3" html={t.contactTitle} /><div className="contact-actions"><a href="mailto:cristian.silvadk22@gmail.com">{t.sendEmail}</a><button id="copy" onClick={copyEmail} aria-label={t.copyLabel} title={t.copyLabel}><SfSymbol name="doc.on.doc" /></button></div><p id="copy-status" role="status">{copyStatus}</p></article>
   </div>;
 }
 
@@ -185,7 +186,7 @@ function DetailDialog({ t, language, open, onClose }) {
     copy: 'I work on an internal tax management platform that supports more than $3B in monthly operations across Brazil and Argentina. My main focus is frontend, but the work often reaches shared systems and Go services.', heading: 'Where I contribute',
     bullets: ['Shared components: created reusable foundations adopted beyond the core product.','Microfrontends: led a migration that lets teams evolve different parts of the platform independently.','Authorization: built shared logic and supported a migration to a new authentication system.','Team: technical decisions, reviews, documentation, examples, and mentoring.']
   };
-  return <dialog ref={dialogRef} onClose={onClose} onClick={(event) => { if (event.target === dialogRef.current) onClose(); }}><button className="close" aria-label="Close details" onClick={onClose}>×</button><div><span className="eyebrow">{content.eyebrow}</span><h2>{content.title}</h2><p>{content.copy}</p><h3>{content.heading}</h3><ul>{content.bullets.map((item) => <li key={item}>{item}</li>)}</ul><p className="eyebrow">REACT · TYPESCRIPT · GO · MICROFRONTENDS</p></div></dialog>;
+  return <dialog ref={dialogRef} onClose={onClose} onClick={(event) => { if (event.target === dialogRef.current) onClose(); }}><button className="close" aria-label="Close details" onClick={onClose}><SfSymbol name="xmark" /></button><div><span className="eyebrow">{content.eyebrow}</span><h2>{content.title}</h2><p>{content.copy}</p><h3>{content.heading}</h3><ul>{content.bullets.map((item) => <li key={item}>{item}</li>)}</ul><p className="eyebrow">REACT · TYPESCRIPT · GO · MICROFRONTENDS</p></div></dialog>;
 }
 
 function useGlassReflection(dependencies) {

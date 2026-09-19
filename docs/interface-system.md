@@ -102,6 +102,13 @@ The primitive owns radius, tint, blur, edge reflection, shadows, light/dark colo
 
 Theme, language, social links, Focus, and Control Center must use these primitives.
 
+### Icons
+
+- Interface icons use SF Symbols exported through macOS `NSImage(systemSymbolName:)`.
+- Do not draw replacement SVG paths or approximate an Apple symbol manually.
+- `scripts/export-sf-symbols.swift` is the reproducible source for the raster mask assets in `public/assets/sf-symbols`.
+- Brand destinations may use a semantically related SF Symbol when the official SF Symbols catalog does not provide a trademark glyph.
+
 ### Widgets
 
 - `HighlightsWidget` — reminder-style list with a summary count.

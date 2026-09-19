@@ -768,3 +768,86 @@ header.system-bar::before { display: none; }
   .system-status { gap: 3px; }
   .system-clock { margin-left: 2px; font-size: 12px; }
 }
+
+/* Final system-bar geometry and official SF Symbols exported by AppKit. */
+.sf-symbol {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask-image: var(--sf-symbol-image);
+  mask-image: var(--sf-symbol-image);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.system-bar-layer,
+.system-bar-layer.control-center-open { z-index: 2147483647; }
+header.system-bar,
+.light header.system-bar {
+  padding-inline: 16px;
+  background: transparent !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.system-status { margin-left: auto; }
+.system-clock { margin: 0 0 0 3px; }
+.control-center-trigger { order: 2; }
+.system-clock { order: 3; }
+.system-focus-status { order: 1; }
+.control-center-trigger .sf-symbol { width: 23px; height: 23px; }
+.control-center-popover {
+  right: 16px;
+  z-index: 2147483647;
+}
+.system-control,
+.control-center-focus {
+  border: 2px solid transparent;
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,.38), 0 16px 32px rgba(0,0,0,.18);
+  backdrop-filter: blur(22px) saturate(155%);
+  -webkit-backdrop-filter: blur(22px) saturate(155%);
+}
+.light .system-control,
+.light .control-center-focus {
+  background: rgba(255,255,255,.18);
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,.72), 0 16px 32px rgba(35,28,24,.13);
+}
+.system-control > .sf-symbol {
+  position: absolute;
+  inset: 0;
+  width: 28px;
+  height: 28px;
+  margin: auto;
+}
+.control-center-focus .focus-icon {
+  display: grid;
+  place-items: center;
+}
+.control-center-focus .focus-icon .sf-symbol { width: 22px; height: 22px; }
+.system-focus-status .focus-icon .sf-symbol { width: 14px; height: 14px; }
+@media (max-width: 650px) {
+  header.system-bar { padding-inline: 12px; }
+  .control-center-popover { right: 12px; }
+}
+
+/* Shared sizing for every exported SF Symbol used by the interface. */
+.primary .sf-symbol { width: 13px; height: 13px; align-self: center; }
+.portrait-note { display: flex; align-items: center; gap: 8px; }
+.portrait-note .sf-symbol { width: 12px; height: 12px; color: var(--orange); }
+.card-link > .sf-symbol,
+.tiny-mark,
+.project-arrow { width: 17px; height: 17px; color: var(--orange); }
+.mini-icon { display: grid; place-items: center; width: 46px; height: 46px; padding: 0; }
+.mini-icon .sf-symbol { width: 22px; height: 22px; }
+.project-icon .sf-symbol { width: 20px; height: 20px; }
+.education-note > .sf-symbol { width: 17px; height: 17px; color: var(--orange); }
+.asterisk { width: 34px; height: 34px; }
+.contact-actions button .sf-symbol { width: 17px; height: 17px; }
+dialog .close { display: grid; place-items: center; width: 38px; height: 38px; }
+dialog .close .sf-symbol { width: 18px; height: 18px; }

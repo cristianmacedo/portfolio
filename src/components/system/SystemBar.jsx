@@ -1,15 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import SfSymbol from '../SfSymbol';
 
 function FocusIcon() {
-  return <span className="focus-icon" aria-hidden="true"><span className="focus-id"><i /></span></span>;
-}
-
-function ControlCenterIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="5" rx="2.5" /><circle cx="8" cy="7.5" r="2" /><rect x="4" y="14" width="16" height="5" rx="2.5" /><circle cx="16" cy="16.5" r="2" /></svg>;
-}
-
-function GitHubIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0 1 12 6.82a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.77c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>;
+  return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
 }
 
 function ControlCenter({ t, language, isLight, focusMode, onLanguage, onTheme, onFocus, onClose, triggerRef }) {
@@ -29,10 +22,10 @@ function ControlCenter({ t, language, isLight, focusMode, onLanguage, onTheme, o
 
   return <div className="control-center-popover" role="dialog" aria-label={t.controlCenter} ref={panelRef}>
     <div className="control-center-actions">
-      <button className="system-control language-control" type="button" onClick={onLanguage} aria-label={t.languageLabel} title={`${t.languageControl}: ${language === 'pt' ? 'Português' : 'English'}`}><span className="system-control-icon">文A</span></button>
-      <button className="system-control" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']} title={`${t.themeControl}: ${t[isLight ? 'themeValueLight' : 'themeValueDark']}`}><span className="system-control-icon theme-glyph">◐</span></button>
-      <a className="system-control" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><GitHubIcon /></a>
-      <a className="system-control linkedin-system-control" href="https://www.linkedin.com/in/cristian-macedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><b aria-hidden="true">in</b></a>
+      <button className="system-control" type="button" onClick={onLanguage} aria-label={t.languageLabel} title={`${t.languageControl}: ${language === 'pt' ? 'Português' : 'English'}`}><SfSymbol name="translate" /></button>
+      <button className="system-control" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']} title={`${t.themeControl}: ${t[isLight ? 'themeValueLight' : 'themeValueDark']}`}><SfSymbol name="circle.lefthalf.filled" /></button>
+      <a className="system-control" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><SfSymbol name="chevron.left.forwardslash.chevron.right" /></a>
+      <a className="system-control" href="https://www.linkedin.com/in/cristianmacedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><SfSymbol name="person.crop.circle" /></a>
     </div>
     <button className="control-center-focus" type="button" aria-pressed={focusMode} onClick={onFocus}>
       <FocusIcon /><span><strong>{t.focusTitle}</strong><small>{t[focusMode ? 'focusStatusOn' : 'focusStatusOff']}</small></span>
@@ -75,7 +68,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
     return () => document.removeEventListener('pointerdown', dismiss);
   }, [open]);
 
-  return <div className="system-bar-layer" ref={rootRef}>
+  return <div className={`system-bar-layer${open ? ' control-center-open' : ''}`} ref={rootRef}>
     <header className="system-bar">
       <a className="system-brand" href="#" aria-label="Cristian Macedo home">cm<span>.</span></a>
       <nav className="system-nav" aria-label={t.mainNavigation}>
@@ -87,8 +80,8 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
       <span className="system-current-section" aria-hidden="true">{navItems.find(([id]) => id === activeSection)?.[1] || t.navWork}</span>
       <div className="system-status">
         {focusMode && <button className="system-focus-status" type="button" onClick={onFocus} aria-label={t.focusDisable}><FocusIcon /><span>{t.focusTitle}</span></button>}
+        <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => setOpen((value) => !value)} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><SfSymbol name="switch.2" /></button>
         <time className="system-clock" dateTime={new Date().toISOString()}>{systemTime}</time>
-        <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => setOpen((value) => !value)} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><ControlCenterIcon /></button>
       </div>
     </header>
     {open && <ControlCenter t={t} language={language} isLight={isLight} focusMode={focusMode} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} onClose={() => setOpen(false)} triggerRef={triggerRef} />}
