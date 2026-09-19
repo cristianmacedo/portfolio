@@ -78,7 +78,7 @@ function SectionHeading({ id, title, caption }) {
 
 function WorkSection({ t, onDetails }) {
   return (
-    <section className="work-section" aria-labelledby="work">
+    <section className="work-section page-section" aria-labelledby="work">
       <SectionHeading id="work" title={t.selectedWork} caption={t.workCaption} />
       <div className="bento">
         <article className="card featured">
@@ -116,9 +116,9 @@ const projects = [
 
 function Projects({ t }) {
   return (
-    <>
+    <section className="projects-section page-section" aria-labelledby="side-projects">
       <SectionHeading id="side-projects" title={t.sideProjectsTitle} caption={t.sideProjectsCaption} />
-      <section className="project-grid">
+      <div className="project-grid">
         {projects.map((project) => {
           const Tag = project.href ? 'a' : 'article';
           return <Tag key={project.name} className={`card side-project${project.featured ? ' side-project-featured' : ''}${project.pretty ? ' prettygit-card' : ''}${project.archived ? ' archived-project' : ''}`} href={project.href} target={project.href ? '_blank' : undefined} rel={project.href ? 'noopener' : undefined}>
@@ -128,8 +128,8 @@ function Projects({ t }) {
             {project.pretty && <div className="prettygit-preview"><span>Pull Request</span><code>&lt;blockquote&gt;…&lt;/blockquote&gt;</code><b>{t.copySnippet}</b></div>}
           </Tag>;
         })}
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
@@ -151,10 +151,10 @@ function Journey({ t }) {
     { date: '2018 — 2021', duration: t.durationIbm, company: 'IBM', place: t.ibmPlace, role: t.ibmRoles, summary: t.ibmSummary, bullets: [t.ibmOne, t.ibmTwo, t.ibmThree], tech: ['React','Carbon','Storybook','WCAG','Performance'] },
     { date: '2018 — 2020', duration: t.degreeDate, company: t.university, place: 'São Paulo', role: t.degree, summary: t.degreeCopy, education: t.educationNote },
   ];
-  return <><SectionHeading id="journey" title={t.journeyTitle} caption={t.journeyCaption} /><section className="card timeline-card">
+  return <section className="journey-section page-section" aria-labelledby="journey"><SectionHeading id="journey" title={t.journeyTitle} caption={t.journeyCaption} /><section className="card timeline-card">
     <div className="timeline-intro"><span className="eyebrow">{t.timelineLabel}</span><Rich as="h3" html={t.timelineHeading} /><p>{t.timelineIntro}</p></div>
     <ol className="timeline">{entries.map((entry) => <TimelineEntry key={entry.company} {...entry} />)}</ol>
-  </section></>;
+  </section></section>;
 }
 
 function Utility({ t, language }) {
@@ -164,10 +164,10 @@ function Utility({ t, language }) {
     catch { setCopyStatus('cristian.silvadk22@gmail.com'); }
   };
   useEffect(() => setCopyStatus(''), [language]);
-  return <div className="utility-grid">
+  return <section className="utility-grid page-section">
     <article className="card approach"><span className="eyebrow">{t.thinkingLabel}</span><SfSymbol name="asterisk" className="asterisk" /><Rich as="h3" html={t.thinkingTitle} /><p>{t.thinkingCopy}</p><div className="ai-practice"><span>{t.aiLabel}</span><p>{t.aiCopy}</p></div></article>
     <article className="card contact"><span className="eyebrow">{t.helloLabel}</span><Rich as="h3" html={t.contactTitle} /><div className="contact-actions"><a href="mailto:cristian.silvadk22@gmail.com">{t.sendEmail}</a><button id="copy" onClick={copyEmail} aria-label={t.copyLabel} title={t.copyLabel}><SfSymbol name="doc.on.doc" /></button></div><p id="copy-status" role="status">{copyStatus}</p></article>
-  </div>;
+  </section>;
 }
 
 function DetailDialog({ t, language, open, onClose }) {
