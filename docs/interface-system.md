@@ -179,6 +179,7 @@ Focus is a page mode, not a separate route. Its state may persist locally but sh
 - The edge nearest the pointer is darker; the opposite edge catches the highlight.
 - Text contrast takes priority over transparency.
 - Shadows indicate elevation, not decoration. Components at the same elevation share the same shadow.
+- Control Center surfaces use the shared `#frosted` displacement filter for refraction, with native blur as a browser fallback. They do not add a decorative outline or halo around the control.
 
 ## Typography
 

@@ -851,3 +851,51 @@ header.system-bar,
 .contact-actions button .sf-symbol { width: 17px; height: 17px; }
 dialog .close { display: grid; place-items: center; width: 38px; height: 38px; }
 dialog .close .sf-symbol { width: 18px; height: 18px; }
+
+/* Refractive control surfaces use the supplied #frosted backdrop filter without a drawn rim. */
+.liquid-glass-definitions {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.system-control,
+.control-center-focus {
+  border: 0;
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 16px 32px rgba(0,0,0,.12);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: url("#frosted");
+}
+.light .system-control,
+.light .control-center-focus {
+  border: 0;
+  background: rgba(255,255,255,.16);
+  box-shadow: 0 16px 32px rgba(35,28,24,.1);
+}
+.system-control::before,
+.control-center-focus::before { display: none; }
+.control-center-focus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px 0 8px;
+}
+.control-center-focus .focus-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  align-self: center;
+}
+.control-center-focus > span:nth-child(2) {
+  display: flex;
+  height: auto;
+  align-self: center;
+  justify-content: center;
+  gap: 1px;
+  transform: translateY(-1px);
+}
+.control-center-focus strong { font-size: 15px; line-height: 18px; }
+.control-center-focus small { font-size: 11px; line-height: 15px; }
