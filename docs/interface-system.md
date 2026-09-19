@@ -138,7 +138,7 @@ Right side:
 - Focus status while the mode is active.
 - Control Center trigger.
 
-The Control Center opens from the top-right trigger as a `popover` surface. Its actions are grouped by purpose and use short, stable labels. It contains:
+The Control Center opens from the top-right trigger as a spatially grouped set of controls, without an enclosing card. Each circular control owns its glass material; Focus uses a four-column pill. Actions use short, stable accessible labels. It contains:
 
 - Language.
 - Light/dark appearance.
@@ -146,7 +146,7 @@ The Control Center opens from the top-right trigger as a `popover` surface. Its 
 - GitHub and LinkedIn.
 - Future system-style preferences.
 
-It must support click outside, `Escape`, focus return, keyboard navigation, and reduced motion. On mobile it becomes a bottom sheet or anchored compact panel rather than a desktop-style floating window.
+It must support click outside, `Escape`, focus return, keyboard navigation, and reduced motion. On mobile it remains an anchored compact control group.
 
 Global controls live only in Control Center. The four-column rail holds the Highlights widget; Focus hides the rail and expands the hero across all 16 columns.
 

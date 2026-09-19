@@ -5,7 +5,7 @@ function FocusIcon() {
 }
 
 function ControlCenterIcon() {
-  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2m4 0h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="5" rx="2.5" /><circle cx="8" cy="7.5" r="2" /><rect x="4" y="14" width="16" height="5" rx="2.5" /><circle cx="16" cy="16.5" r="2" /></svg>;
 }
 
 function GitHubIcon() {
@@ -28,29 +28,40 @@ function ControlCenter({ t, language, isLight, focusMode, onLanguage, onTheme, o
   }, [onClose, triggerRef]);
 
   return <div className="control-center-popover" role="dialog" aria-label={t.controlCenter} ref={panelRef}>
-    <div className="control-center-heading"><strong>{t.controlCenter}</strong><span>{t.preferences}</span></div>
     <div className="control-center-actions">
-      <button className="system-control language-control" type="button" onClick={onLanguage} aria-label={t.languageLabel}>
-        <span className="system-control-icon">文A</span><span><strong>{t.languageControl}</strong><small>{language === 'pt' ? 'Português' : 'English'}</small></span>
-      </button>
-      <button className="system-control" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']}>
-        <span className="system-control-icon theme-glyph">◐</span><span><strong>{t.themeControl}</strong><small>{t[isLight ? 'themeValueLight' : 'themeValueDark']}</small></span>
-      </button>
+      <button className="system-control language-control" type="button" onClick={onLanguage} aria-label={t.languageLabel} title={`${t.languageControl}: ${language === 'pt' ? 'Português' : 'English'}`}><span className="system-control-icon">文A</span></button>
+      <button className="system-control" type="button" onClick={onTheme} aria-label={t[isLight ? 'themeDark' : 'themeLight']} title={`${t.themeControl}: ${t[isLight ? 'themeValueLight' : 'themeValueDark']}`}><span className="system-control-icon theme-glyph">◐</span></button>
+      <a className="system-control" href="https://github.com/cristianmacedo" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><GitHubIcon /></a>
+      <a className="system-control linkedin-system-control" href="https://www.linkedin.com/in/cristian-macedo" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><b aria-hidden="true">in</b></a>
     </div>
     <button className="control-center-focus" type="button" aria-pressed={focusMode} onClick={onFocus}>
-      <FocusIcon /><span><strong>{t.focusTitle}</strong><small>{t[focusMode ? 'focusStatusOn' : 'focusStatusOff']}</small></span><span className="control-switch" aria-hidden="true" />
+      <FocusIcon /><span><strong>{t.focusTitle}</strong><small>{t[focusMode ? 'focusStatusOn' : 'focusStatusOff']}</small></span>
     </button>
-    <div className="control-center-links" aria-label={t.socialLinks}>
-      <a href="https://github.com/cristianmacedo" target="_blank" rel="noopener"><GitHubIcon /><span>GitHub</span></a>
-      <a href="https://www.linkedin.com/in/cristian-macedo" target="_blank" rel="noopener"><b aria-hidden="true">in</b><span>LinkedIn</span></a>
-    </div>
   </div>;
+}
+
+function useSystemClock(language) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 30_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  if (language === 'pt') {
+    const weekday = new Intl.DateTimeFormat('pt-BR', { weekday: 'short' }).format(now);
+    const month = new Intl.DateTimeFormat('pt-BR', { month: 'short' }).format(now);
+    const time = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: false }).format(now);
+    return `${weekday.charAt(0).toUpperCase()}${weekday.slice(1)} ${now.getDate()} de ${month} ${time}`;
+  }
+  const date = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(now);
+  const time = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }).format(now);
+  return `${date} ${time}`;
 }
 
 export default function SystemBar({ t, language, isLight, focusMode, activeSection, onLanguage, onTheme, onFocus }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
   const triggerRef = useRef(null);
+  const systemTime = useSystemClock(language);
   const navItems = [
     ['work', t.navWork], ['side-projects', t.navProjects], ['journey', t.navJourney], ['about', t.navAbout],
   ];
@@ -76,6 +87,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
       <span className="system-current-section" aria-hidden="true">{navItems.find(([id]) => id === activeSection)?.[1] || t.navWork}</span>
       <div className="system-status">
         {focusMode && <button className="system-focus-status" type="button" onClick={onFocus} aria-label={t.focusDisable}><FocusIcon /><span>{t.focusTitle}</span></button>}
+        <time className="system-clock" dateTime={new Date().toISOString()}>{systemTime}</time>
         <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => setOpen((value) => !value)} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><ControlCenterIcon /></button>
       </div>
     </header>

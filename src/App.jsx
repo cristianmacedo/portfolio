@@ -196,7 +196,7 @@ function useGlassReflection(dependencies) {
     const handle = (event) => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
-        document.querySelectorAll('.card, .proof-strip, .control-tile, .focus-toggle, .system-bar, .control-center-popover').forEach((surface) => {
+        document.querySelectorAll('.card, .proof-strip, .control-tile, .focus-toggle, .system-control, .control-center-focus').forEach((surface) => {
           const rect = surface.getBoundingClientRect();
           const angle = Math.atan2(event.clientY - (rect.top + rect.height / 2), event.clientX - (rect.left + rect.width / 2)) * 180 / Math.PI + 90;
           surface.style.setProperty('--glass-angle', `${angle.toFixed(2)}deg`);

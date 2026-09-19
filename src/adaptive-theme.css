@@ -631,3 +631,140 @@ header.system-bar::before,
   .control-center-popover { animation: none; }
   .control-switch::after { transition: none; }
 }
+
+/* macOS-style integration: the bar belongs to the viewport; each control owns its glass. */
+.shell { padding-top: 64px; }
+.system-bar-layer {
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: none;
+}
+header.system-bar {
+  height: 40px;
+  padding-inline: max(20px, calc((100vw - 1168px) / 2));
+  border-radius: 0;
+  background: color-mix(in srgb, var(--bg) 76%, transparent) !important;
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,.055);
+  overflow: visible;
+}
+.light header.system-bar {
+  background: color-mix(in srgb, var(--bg) 72%, transparent) !important;
+  box-shadow: inset 0 -1px 0 rgba(35,36,40,.08);
+}
+header.system-bar::before { display: none; }
+.system-nav a,
+.control-center-trigger,
+.system-focus-status { border-radius: 999px; }
+.system-nav a { padding: 6px 13px; }
+.system-clock {
+  display: block;
+  margin-left: 8px;
+  font-size: 13px;
+  font-weight: 520;
+  letter-spacing: -.1px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.control-center-trigger { color: var(--text); }
+.control-center-trigger svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.control-center-trigger svg rect { fill: none; }
+.control-center-trigger svg circle { fill: currentColor; stroke: none; }
+
+.control-center-popover {
+  top: 50px;
+  right: max(20px, calc((100vw - 1168px) / 2));
+  width: 268px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
+}
+.light .control-center-popover { background: transparent; box-shadow: none; }
+.control-center-popover::before { display: none; }
+.control-center-heading,
+.control-center-links { display: none; }
+.control-center-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 58px);
+  gap: 12px;
+}
+.system-control,
+.control-center-focus {
+  position: relative;
+  isolation: isolate;
+  color: var(--text);
+  background: rgba(44,45,49,.72);
+  box-shadow: 0 12px 30px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.14);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+}
+.light .system-control,
+.light .control-center-focus {
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 12px 30px rgba(55,44,37,.13), inset 0 1px 0 rgba(255,255,255,.88);
+}
+.system-control::before,
+.control-center-focus::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1.25px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(calc(var(--glass-angle) + 180deg), transparent 8%, rgba(255,255,255,.08) 25%, rgba(255,255,255,.52) 43%, rgba(240,138,87,.15) 58%, transparent 90%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: .58;
+}
+.system-control {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  text-align: center;
+}
+.system-control:hover,
+.control-center-focus:hover { background: rgba(57,58,63,.82); transform: translateY(-1px); }
+.light .system-control:hover,
+.light .control-center-focus:hover { background: rgba(255,255,255,.84); }
+.system-control-icon { width: auto; height: auto; background: transparent; font-size: 17px; }
+.language-control .system-control-icon { width: auto; height: auto; background: transparent; color: currentColor; font-size: 18px; }
+.theme-glyph { font-size: 30px; }
+.system-control > svg { width: 27px; height: 27px; }
+.linkedin-system-control b { font: 750 25px/1 Arial,sans-serif; letter-spacing: -1.5px; }
+.control-center-focus {
+  width: 268px;
+  height: 58px;
+  min-height: 58px;
+  margin-top: 12px;
+  padding: 8px;
+  grid-template-columns: 42px 1fr;
+  border-radius: 999px;
+}
+.control-center-focus[aria-pressed="true"] { background: #285aa8; }
+.control-center-focus[aria-pressed="true"]:hover { background: #3269bd; }
+
+@media (max-width: 900px) {
+  .shell { padding-top: 62px; }
+}
+@media (max-width: 650px) {
+  .shell { padding-top: 62px; }
+  .system-bar-layer { top: 0; width: 100%; }
+  header.system-bar { height: 40px; padding: 0 12px; border-radius: 0; }
+  .control-center-popover { top: 50px; right: 12px; left: auto; width: 268px; }
+}
+@media (max-width: 500px) {
+  .system-current-section { display: none; }
+  .system-status { gap: 3px; }
+  .system-clock { margin-left: 2px; font-size: 12px; }
+}
