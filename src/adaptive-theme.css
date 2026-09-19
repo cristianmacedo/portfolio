@@ -917,24 +917,48 @@ dialog .close .sf-symbol { width: 18px; height: 18px; }
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  border: 2px solid transparent;
-  background: rgba(255,255,255,.08);
-  box-shadow: 0 0 0 2px rgba(255,255,255,.60), 0 16px 32px rgba(0,0,0,.12);
-  backdrop-filter: blur(16px) saturate(145%);
-  -webkit-backdrop-filter: blur(16px) saturate(145%);
-  backdrop-filter: url("#frosted");
-  -webkit-backdrop-filter: url("#frosted");
+  border: 0;
+  background: transparent;
+  box-shadow: 0 4px 24px rgba(0,0,0,.18);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.control-center-popover .system-control::before,
+.control-center-popover .control-center-focus::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  border-radius: inherit;
+  background: rgba(255,255,255,.06);
+  box-shadow: inset 0 0 20px -5px rgba(255,255,255,.45);
+  pointer-events: none;
 }
 .control-center-popover .system-control::after,
 .control-center-popover .control-center-focus::after {
-  display: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  border-radius: inherit;
+  backdrop-filter: url("#liquid-glass-filter");
+  -webkit-backdrop-filter: url("#liquid-glass-filter");
+  isolation: isolate;
+  pointer-events: none;
 }
 .light .control-center-popover .system-control,
 .light .control-center-popover .control-center-focus {
-  background: rgba(255,255,255,.08);
-  box-shadow: 0 0 0 2px rgba(255,255,255,.68), 0 16px 32px rgba(35,28,24,.12);
+  background: transparent;
+  box-shadow: 0 4px 24px rgba(35,28,24,.14);
 }
-.control-center-popover .control-center-focus[aria-pressed="true"] { background: rgba(40,90,168,.72); }
+.light .control-center-popover .system-control::before,
+.light .control-center-popover .control-center-focus::before {
+  background: rgba(255,255,255,.10);
+  box-shadow: inset 0 0 20px -5px rgba(255,255,255,.72);
+}
+.control-center-popover .control-center-focus[aria-pressed="true"]::before { background: rgba(40,90,168,.70); }
 .control-center-popover .system-control > *,
 .control-center-popover .control-center-focus > * { position: relative; z-index: 2; }
 .control-center-popover .system-control > .sf-symbol { position: absolute; z-index: 2; }
