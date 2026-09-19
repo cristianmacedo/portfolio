@@ -1045,26 +1045,32 @@ dialog .close .sf-symbol { width: 18px; height: 18px; }
  * filter out of the content container avoids nested Backdrop Roots in Chrome.
  */
 .card {
-  isolation: isolate;
+  isolation: auto;
   background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  backdrop-filter: blur(25px) saturate(155%);
+  -webkit-backdrop-filter: blur(25px) saturate(155%);
 }
 .card::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   display: block;
   border: 0;
   border-radius: inherit;
   pointer-events: none;
   background: rgba(31, 32, 35, .62);
-  backdrop-filter: blur(25px) saturate(155%);
-  -webkit-backdrop-filter: blur(25px) saturate(155%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   mask-image: none;
   -webkit-mask-image: none;
 }
+.card::before { z-index: 2; }
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+.timeline-card > .timeline-intro { position: sticky; }
 .light .card::after {
   background: rgba(250, 250, 252, .62);
 }
@@ -1078,4 +1084,20 @@ dialog .close .sf-symbol { width: 18px; height: 18px; }
 .card .work-scope > div {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/* Keep the texture in the cards' own ancestor paint tree. Chromium can then
+   include it in the Backdrop Root Image without crossing the shell boundary. */
+main {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px),
+    linear-gradient(115deg, transparent 15%, rgba(255, 255, 255, .025) 45%, transparent 70%);
+  background-size: 32px 32px, 32px 32px, 100% 100%;
+}
+.light main {
+  background-image:
+    linear-gradient(rgba(45, 38, 34, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 38, 34, .045) 1px, transparent 1px),
+    linear-gradient(115deg, transparent 15%, rgba(255, 255, 255, .16) 45%, transparent 70%);
 }
