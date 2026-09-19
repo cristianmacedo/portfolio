@@ -125,7 +125,7 @@ These are compositions of shared primitives. Repeated structures such as card he
 
 ## System bar and Control Center
 
-The future system bar replaces the conventional header and is visually inspired by the macOS menu bar.
+The system bar replaces the conventional header and is visually inspired by the macOS menu bar.
 
 Left side:
 
@@ -135,11 +135,10 @@ Left side:
 
 Right side:
 
-- Optional São Paulo time.
+- Focus status while the mode is active.
 - Control Center trigger.
-- Theme/status indicator only when it adds useful context.
 
-The Control Center opens from the top-right trigger as a `popover` surface. It contains:
+The Control Center opens from the top-right trigger as a `popover` surface. Its actions are grouped by purpose and use short, stable labels. It contains:
 
 - Language.
 - Light/dark appearance.
@@ -149,7 +148,7 @@ The Control Center opens from the top-right trigger as a `popover` surface. It c
 
 It must support click outside, `Escape`, focus return, keyboard navigation, and reduced motion. On mobile it becomes a bottom sheet or anchored compact panel rather than a desktop-style floating window.
 
-Once Control Center exists, duplicated controls should be removed from the widget rail. The freed four-column rail can hold highlights, a carefully justified widget, or become part of the hero.
+Global controls live only in Control Center. The four-column rail holds the Highlights widget; Focus hides the rail and expands the hero across all 16 columns.
 
 ## Focus mode
 

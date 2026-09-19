@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import translations from './translations.json';
+import SystemBar from './components/system/SystemBar';
 
 const FRAME_IDS = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12];
 
@@ -9,17 +10,6 @@ function readStorage(key, fallback) {
 
 function Rich({ as: Tag = 'span', html, ...props }) {
   return <Tag {...props} dangerouslySetInnerHTML={{ __html: html }} />;
-}
-
-function Header({ t }) {
-  return (
-    <header>
-      <a className="brand" href="#" aria-label="Cristian Macedo home">cm<span>.</span></a>
-      <nav aria-label="Main navigation">
-        <a href="#work">{t.navWork}</a><a href="#journey">{t.navJourney}</a><a href="#about">{t.navAbout}</a>
-      </nav>
-    </header>
-  );
 }
 
 function Hero({ t }) {
@@ -61,6 +51,10 @@ function ControlPanel({ t, language, isLight, focusMode, onLanguage, onTheme, on
       <Highlights t={t} />
     </aside>
   );
+}
+
+function HighlightsRail({ t }) {
+  return <aside className="top-widgets" aria-label={t.highlightsLabel}><Highlights t={t} /></aside>;
 }
 
 function Highlights({ t }) {
@@ -198,12 +192,11 @@ function useGlassReflection(dependencies) {
   useEffect(() => {
     const finePointer = matchMedia('(pointer: fine) and (prefers-reduced-motion: no-preference)');
     if (!finePointer.matches) return undefined;
-    const surfaces = [...document.querySelectorAll('.card, .proof-strip, .control-tile, .focus-toggle')];
     let frame = 0;
     const handle = (event) => {
       if (frame) return;
       frame = requestAnimationFrame(() => {
-        surfaces.forEach((surface) => {
+        document.querySelectorAll('.card, .proof-strip, .control-tile, .focus-toggle, .system-bar, .control-center-popover').forEach((surface) => {
           const rect = surface.getBoundingClientRect();
           const angle = Math.atan2(event.clientY - (rect.top + rect.height / 2), event.clientX - (rect.left + rect.width / 2)) * 180 / Math.PI + 90;
           surface.style.setProperty('--glass-angle', `${angle.toFixed(2)}deg`);
@@ -216,6 +209,20 @@ function useGlassReflection(dependencies) {
   }, dependencies);
 }
 
+function useActiveSection() {
+  const [activeSection, setActiveSection] = useState('work');
+  useEffect(() => {
+    const sections = ['work', 'side-projects', 'journey', 'about'].map((id) => document.getElementById(id)).filter(Boolean);
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.id) setActiveSection(visible.target.id);
+    }, { rootMargin: '-12% 0px -66% 0px', threshold: [0, .2, .5] });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+  return activeSection;
+}
+
 export default function App() {
   const [language, setLanguage] = useState(() => readStorage('portfolio-language', navigator.language.toLowerCase().startsWith('pt') ? 'pt' : 'en'));
   const [isLight, setIsLight] = useState(() => {
@@ -224,6 +231,7 @@ export default function App() {
   });
   const [focusMode, setFocusMode] = useState(() => readStorage('portfolio-focus', 'false') === 'true');
   const [detailOpen, setDetailOpen] = useState(false);
+  const activeSection = useActiveSection();
   const t = translations[language];
 
   useEffect(() => {
@@ -266,10 +274,10 @@ export default function App() {
 
   return <>
     <a className="skip" href="#work">{t.skip}</a>
+    <SystemBar t={t} language={language} isLight={isLight} focusMode={focusMode} activeSection={activeSection} onLanguage={() => setLanguage((value) => value === 'en' ? 'pt' : 'en')} onTheme={changeTheme} onFocus={changeFocus} />
     <div className="shell">
-      <Header t={t} />
       <main>
-        <div className="top-grid"><Hero t={t} /><ControlPanel t={t} language={language} isLight={isLight} focusMode={focusMode} onLanguage={() => setLanguage((value) => value === 'en' ? 'pt' : 'en')} onTheme={changeTheme} onFocus={changeFocus} /></div>
+        <div className="top-grid"><Hero t={t} /><HighlightsRail t={t} /></div>
         <WorkSection t={t} onDetails={() => setDetailOpen(true)} />
         <Projects t={t} />
         <Journey t={t} />
