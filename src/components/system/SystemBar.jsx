@@ -6,6 +6,80 @@ function FocusIcon() {
   return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
 }
 
+function useNetworkStatus() {
+  const read = () => {
+    if (typeof navigator.onLine !== 'boolean') return null;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    return {
+      online: navigator.onLine,
+      effectiveType: connection?.effectiveType || null,
+      saveData: Boolean(connection?.saveData),
+    };
+  };
+  const [status, setStatus] = useState(read);
+  useEffect(() => {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const update = () => setStatus(read());
+    window.addEventListener('online', update);
+    window.addEventListener('offline', update);
+    connection?.addEventListener?.('change', update);
+    return () => {
+      window.removeEventListener('online', update);
+      window.removeEventListener('offline', update);
+      connection?.removeEventListener?.('change', update);
+    };
+  }, []);
+  return status;
+}
+
+function NetworkStatus({ language }) {
+  const status = useNetworkStatus();
+  if (!status) return null;
+  const constrained = status.saveData || status.effectiveType === 'slow-2g' || status.effectiveType === '2g';
+  const symbol = !status.online ? 'wifi.slash' : constrained ? 'wifi.exclamationmark' : 'wifi';
+  const detail = !status.online ? (language === 'pt' ? 'Sem conexão' : 'Offline') : status.effectiveType ? status.effectiveType.toUpperCase() : (language === 'pt' ? 'Conectado' : 'Connected');
+  const label = `${language === 'pt' ? 'Rede' : 'Network'}: ${detail}`;
+  return <span className="system-indicator network-indicator" title={label}><SfSymbol name={symbol} label={label} /></span>;
+}
+
+function batterySymbol(level, charging) {
+  if (charging) return 'battery.100percent.bolt';
+  if (level <= .125) return 'battery.0percent';
+  if (level <= .375) return 'battery.25percent';
+  if (level <= .625) return 'battery.50percent';
+  if (level <= .875) return 'battery.75percent';
+  return 'battery.100percent';
+}
+
+function BatteryStatus({ language }) {
+  const [battery, setBattery] = useState(null);
+  useEffect(() => {
+    if (typeof navigator.getBattery !== 'function') return undefined;
+    let manager;
+    let active = true;
+    const update = () => {
+      if (active && manager) setBattery({ level: manager.level, charging: manager.charging });
+    };
+    navigator.getBattery().then((value) => {
+      if (!active) return;
+      manager = value;
+      update();
+      manager.addEventListener('levelchange', update);
+      manager.addEventListener('chargingchange', update);
+    }).catch(() => {});
+    return () => {
+      active = false;
+      manager?.removeEventListener('levelchange', update);
+      manager?.removeEventListener('chargingchange', update);
+    };
+  }, []);
+  if (!battery) return null;
+  const percent = Math.round(battery.level * 100);
+  const state = battery.charging ? (language === 'pt' ? 'carregando' : 'charging') : `${percent}%`;
+  const label = `${language === 'pt' ? 'Bateria' : 'Battery'}: ${state}`;
+  return <span className="system-indicator battery-indicator" title={label}><SfSymbol name={batterySymbol(battery.level, battery.charging)} label={label} /></span>;
+}
+
 function ControlCenter({ t, language, isLight, focusMode, onLanguage, onTheme, onFocus, onClose, triggerRef }) {
   const panelRef = useRef(null);
 
@@ -81,6 +155,8 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
       <span className="system-current-section" aria-hidden="true">{navItems.find(([id]) => id === activeSection)?.[1] || t.navWork}</span>
       <div className="system-status">
         {focusMode && <button className="system-focus-status" type="button" onClick={onFocus} aria-label={t.focusDisable}><FocusIcon /><span>{t.focusTitle}</span></button>}
+        <NetworkStatus language={language} />
+        <BatteryStatus language={language} />
         <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => setOpen((value) => !value)} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><SfSymbol name="switch.2" /></button>
         <time className="system-clock" dateTime={new Date().toISOString()}>{systemTime}</time>
       </div>

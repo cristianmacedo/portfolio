@@ -12,3 +12,12 @@ person.text.rectangle
 switch.2
 translate
 xmark
+wifi
+wifi.exclamationmark
+wifi.slash
+battery.0percent
+battery.25percent
+battery.50percent
+battery.75percent
+battery.100percent
+battery.100percent.bolt

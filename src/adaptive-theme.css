@@ -1197,3 +1197,28 @@ header.system-bar { z-index: 1; }
     grid-row: 1 / -1;
   }
 }
+
+.system-indicator {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 32px;
+  flex: 0 0 auto;
+  color: var(--text);
+}
+.system-indicator .sf-symbol {
+  width: 20px;
+  height: 20px;
+}
+.battery-indicator { width: 30px; }
+.battery-indicator .sf-symbol {
+  width: 25px;
+  height: 25px;
+}
+
+@media (max-width: 500px) {
+  .system-indicator { width: 24px; }
+  .system-indicator .sf-symbol { width: 18px; height: 18px; }
+  .battery-indicator { width: 27px; }
+  .battery-indicator .sf-symbol { width: 23px; height: 23px; }
+}
