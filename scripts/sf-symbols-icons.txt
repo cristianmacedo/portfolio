@@ -5,10 +5,13 @@ bitcoinsign.circle
 book.closed
 chart.xyaxis.line
 chevron.left.forwardslash.chevron.right
+chevron.left
+chevron.right
 circle.lefthalf.filled
 command
 dollarsign
 person.text.rectangle
+plus
 switch.2
 translate
 xmark
