@@ -10,10 +10,6 @@ function readStorage(key, fallback) {
   try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
 }
 
-function readJsonStorage(key, fallback) {
-  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
-}
-
 function Rich({ as: Tag = 'span', html, ...props }) {
   return <Tag {...props} dangerouslySetInnerHTML={{ __html: html }} />;
 }
@@ -65,31 +61,51 @@ function HighlightsRail({ t }) {
 
 function Highlights({ t }) {
   const defaults = [
-    { id: 'years', title: '7+', detail: t.years },
-    { id: 'big-techs', title: t.bigTechsMark, detail: t.bigTechs },
-    { id: 'seniority', title: t.seniorityMark, detail: t.leadershipRange },
+    { id: 'years', title: '7+', detail: t.years, position: 1 },
+    { id: 'big-techs', title: t.bigTechsMark, detail: t.bigTechs, position: 2 },
+    { id: 'seniority', title: t.seniorityMark, detail: t.leadershipRange, position: 3 },
   ];
-  const [completed, setCompleted] = useState(() => readJsonStorage('portfolio-reminder-state', { years: true, 'big-techs': true, seniority: true }));
-  const [customItems, setCustomItems] = useState(() => readJsonStorage('portfolio-custom-reminders', []));
-  const [draft, setDraft] = useState('');
-  const items = [...defaults, ...customItems];
+  const [completed, setCompleted] = useState({ years: true, 'big-techs': true, seniority: true });
+  const [customItems, setCustomItems] = useState([]);
+  const [edits, setEdits] = useState({});
+  const [pendingFocus, setPendingFocus] = useState(null);
+  const inputRefs = useRef(new Map());
+  const items = [...defaults.map((item) => ({ ...item, ...edits[item.id] })), ...customItems]
+    .sort((a, b) => a.position - b.position);
 
   useEffect(() => {
-    try { localStorage.setItem('portfolio-reminder-state', JSON.stringify(completed)); } catch {}
-  }, [completed]);
-  useEffect(() => {
-    try { localStorage.setItem('portfolio-custom-reminders', JSON.stringify(customItems)); } catch {}
-  }, [customItems]);
+    if (!pendingFocus) return;
+    const input = inputRefs.current.get(pendingFocus);
+    input?.focus();
+    input?.setSelectionRange(0, input.value.length);
+    setPendingFocus(null);
+  }, [customItems, pendingFocus]);
 
   const toggle = (id) => setCompleted((value) => ({ ...value, [id]: !value[id] }));
-  const addReminder = (event) => {
-    event.preventDefault();
-    const title = draft.trim();
-    if (!title) return;
+  const updateItem = (item, field, value) => {
+    if (item.id.startsWith('custom-')) {
+      setCustomItems((current) => current.map((candidate) => candidate.id === item.id ? { ...candidate, [field]: value } : candidate));
+      return;
+    }
+    setEdits((current) => ({ ...current, [item.id]: { ...current[item.id], [field]: value } }));
+  };
+  const addAfter = (item) => {
+    const index = items.findIndex((candidate) => candidate.id === item.id);
+    const nextPosition = items[index + 1]?.position;
+    const position = nextPosition == null ? item.position + 1 : (item.position + nextPosition) / 2;
     const id = `custom-${Date.now()}`;
-    setCustomItems((value) => [...value, { id, title, detail: '' }]);
+    setCustomItems((value) => [...value, { id, title: '', detail: '', position }]);
     setCompleted((value) => ({ ...value, [id]: false }));
-    setDraft('');
+    setPendingFocus(id);
+  };
+  const handleEnter = (event, item) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    addAfter(item);
+  };
+  const moveCursorToEnd = (event) => {
+    const input = event.currentTarget;
+    requestAnimationFrame(() => input.setSelectionRange(input.value.length, input.value.length));
   };
 
   return (
@@ -100,13 +116,33 @@ function Highlights({ t }) {
           <button className="reminder-toggle" type="button" aria-pressed={Boolean(completed[item.id])} aria-label={`${completed[item.id] ? t.unmarkReminder : t.markReminder}: ${item.title}`} onClick={() => toggle(item.id)}>
             <span className={`reminder-check${completed[item.id] ? ' is-complete' : ''}`} aria-hidden="true" />
           </button>
-          <div><strong>{item.title}</strong>{item.detail && <span>{item.detail}</span>}</div>
+          <div className="reminder-copy">
+            <input
+              ref={(node) => node ? inputRefs.current.set(item.id, node) : inputRefs.current.delete(item.id)}
+              className="reminder-title-input"
+              value={item.title}
+              size={Math.max(1, item.title.length)}
+              placeholder={t.newReminder}
+              aria-label={item.title || t.newReminder}
+              onChange={(event) => updateItem(item, 'title', event.target.value)}
+              onFocus={moveCursorToEnd}
+              onClick={moveCursorToEnd}
+              onKeyDown={(event) => handleEnter(event, item)}
+              maxLength={64}
+            />
+            {item.detail && <input
+              className="reminder-detail-input"
+              value={item.detail}
+              aria-label={item.detail}
+              onChange={(event) => updateItem(item, 'detail', event.target.value)}
+              onFocus={moveCursorToEnd}
+              onClick={moveCursorToEnd}
+              onKeyDown={(event) => handleEnter(event, item)}
+              maxLength={96}
+            />}
+          </div>
         </li>)}
       </ul>
-      <form className="reminder-add" onSubmit={addReminder}>
-        <button type="submit" aria-label={t.addReminder}><SfSymbol name="plus" /></button>
-        <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder={t.newReminder} aria-label={t.newReminder} maxLength={64} />
-      </form>
     </section>
   );
 }
