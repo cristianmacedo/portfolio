@@ -182,10 +182,10 @@ function WorkSection({ t, onDetails }) {
 }
 
 const projects = [
-  { id: 'senalytics', name: 'Senalytics', href: 'https://github.com/cristianmacedo/senalytics', image: 'senalytics-cover.png', tech: ['React 19', 'TypeScript', 'React Query', 'Recharts'], copy: 'senalyticsCopy', detail: 'senalyticsDetail' },
-  { id: 'prettygit', name: 'PrettyGit', href: 'https://github.com/cristianmacedo/prettygit', image: 'prettygit-cover.png', tech: ['Browser Extension', 'JavaScript', 'GitHub'], copy: 'prettygitCopy' },
-  { id: 'spendbox', name: 'SpendBox', href: 'https://github.com/cristianmacedo/spendbox', image: 'spendbox-cover.png', tech: ['Next.js', 'Zustand', 'Product UI'], copy: 'spendboxShort' },
-  { id: 'ohnocoiner', name: 'OhNoCoiner', href: 'https://github.com/cristianmacedo/ohnocoiner', image: 'ohnocoiner-cover.png', tech: ['React', 'CoinDesk API', 'Data'], copy: 'ohnocoinerCopy' },
+  { id: 'senalytics', name: 'Senalytics', href: 'https://github.com/cristianmacedo/senalytics', image: 'senalytics-cover.png', category: 'senalyticsCategory', tech: ['React 19', 'TypeScript', 'React Query', 'Recharts'], copy: 'senalyticsCopy', detail: 'senalyticsDetail' },
+  { id: 'prettygit', name: 'PrettyGit', href: 'https://github.com/cristianmacedo/prettygit', image: 'prettygit-cover.png', category: 'prettygitCategory', tech: ['Browser Extension', 'JavaScript', 'GitHub'], copy: 'prettygitCopy' },
+  { id: 'spendbox', name: 'SpendBox', href: 'https://github.com/cristianmacedo/spendbox', image: 'spendbox-cover.png', category: 'spendboxCategory', tech: ['Next.js', 'Zustand', 'Product UI'], copy: 'spendboxShort' },
+  { id: 'ohnocoiner', name: 'OhNoCoiner', href: 'https://github.com/cristianmacedo/ohnocoiner', image: 'ohnocoiner-cover.png', category: 'ohnocoinerCategory', tech: ['React', 'CoinDesk API', 'Data'], copy: 'ohnocoinerCopy' },
 ];
 
 function ProjectDialog({ project, t, onClose }) {
@@ -227,7 +227,7 @@ function Projects({ t }) {
         <div className="project-carousel" ref={railRef} aria-label={t.projectsCarousel}>
           {projects.map((project) => <article className="project-showcase-card" key={project.id}>
             <img src={`${import.meta.env.BASE_URL}assets/projects/${project.image}`} alt="" loading="lazy" />
-            <div className="project-showcase-copy"><span>{project.tech[0]}</span><h3>{project.name}</h3><p>{t[project.copy]}</p></div>
+            <div className="project-showcase-copy"><span>{t[project.category]}</span><h3>{project.name}</h3><p>{t[project.copy]}</p></div>
             <button className="project-open" type="button" aria-label={`${t.openProject}: ${project.name}`} onClick={() => setSelectedProject(project)}><SfSymbol name="plus" /></button>
           </article>)}
         </div>
