@@ -365,13 +365,12 @@ nav a:hover,
 .featured { view-transition-name: featured-work; }
 .now { view-transition-name: current-chat; }
 .about { view-transition-name: about-card; }
-.project-grid { view-transition-name: personal-projects; }
+.projects-section { view-transition-name: personal-projects; }
 .timeline-card { view-transition-name: career-timeline; }
 .utility-grid { view-transition-name: utility-cards; }
 
 .focus-mode .now,
-.focus-mode #side-projects,
-.focus-mode .project-grid,
+.focus-mode .projects-section,
 .focus-mode .personal,
 .focus-mode .footer-note { display: none; }
 .focus-mode .top-grid { grid-template-columns: minmax(0, 1fr); }
