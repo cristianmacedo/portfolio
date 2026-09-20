@@ -10,6 +10,10 @@ function readStorage(key, fallback) {
   try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
 }
 
+function readJsonStorage(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
+}
+
 function Rich({ as: Tag = 'span', html, ...props }) {
   return <Tag {...props} dangerouslySetInnerHTML={{ __html: html }} />;
 }
@@ -60,14 +64,49 @@ function HighlightsRail({ t }) {
 }
 
 function Highlights({ t }) {
+  const defaults = [
+    { id: 'years', title: '7+', detail: t.years },
+    { id: 'big-techs', title: t.bigTechsMark, detail: t.bigTechs },
+    { id: 'seniority', title: t.seniorityMark, detail: t.leadershipRange },
+  ];
+  const [completed, setCompleted] = useState(() => readJsonStorage('portfolio-reminder-state', { years: true, 'big-techs': true, seniority: true }));
+  const [customItems, setCustomItems] = useState(() => readJsonStorage('portfolio-custom-reminders', []));
+  const [draft, setDraft] = useState('');
+  const items = [...defaults, ...customItems];
+
+  useEffect(() => {
+    try { localStorage.setItem('portfolio-reminder-state', JSON.stringify(completed)); } catch {}
+  }, [completed]);
+  useEffect(() => {
+    try { localStorage.setItem('portfolio-custom-reminders', JSON.stringify(customItems)); } catch {}
+  }, [customItems]);
+
+  const toggle = (id) => setCompleted((value) => ({ ...value, [id]: !value[id] }));
+  const addReminder = (event) => {
+    event.preventDefault();
+    const title = draft.trim();
+    if (!title) return;
+    const id = `custom-${Date.now()}`;
+    setCustomItems((value) => [...value, { id, title, detail: '' }]);
+    setCompleted((value) => ({ ...value, [id]: false }));
+    setDraft('');
+  };
+
   return (
     <section className="proof-strip reminders-widget" aria-label="Career highlights">
-      <div className="reminders-header"><div><strong>3</strong><span>{t.highlightsLabel}</span></div><span className="reminders-app-icon" aria-hidden="true" /></div>
+      <div className="reminders-header"><div><strong>{items.length}</strong><span>{t.highlightsLabel}</span></div><span className="reminders-app-icon" aria-hidden="true" /></div>
       <ul className="reminders-list">
-        <li><span className="reminder-check" aria-hidden="true" /><div><strong>7+</strong><span>{t.years}</span></div></li>
-        <li><span className="reminder-check" aria-hidden="true" /><div><strong>{t.bigTechsMark}</strong><span>{t.bigTechs}</span></div></li>
-        <li><span className="reminder-check" aria-hidden="true" /><div><strong>{t.seniorityMark}</strong><span>{t.leadershipRange}</span></div></li>
+        {items.map((item) => <li key={item.id}>
+          <button className="reminder-toggle" type="button" aria-pressed={Boolean(completed[item.id])} aria-label={`${completed[item.id] ? t.unmarkReminder : t.markReminder}: ${item.title}`} onClick={() => toggle(item.id)}>
+            <span className={`reminder-check${completed[item.id] ? ' is-complete' : ''}`} aria-hidden="true" />
+          </button>
+          <div><strong>{item.title}</strong>{item.detail && <span>{item.detail}</span>}</div>
+        </li>)}
       </ul>
+      <form className="reminder-add" onSubmit={addReminder}>
+        <button type="submit" aria-label={t.addReminder}><SfSymbol name="plus" /></button>
+        <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder={t.newReminder} aria-label={t.newReminder} maxLength={64} />
+      </form>
     </section>
   );
 }

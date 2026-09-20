@@ -9,6 +9,7 @@ circle.lefthalf.filled
 command
 dollarsign
 person.text.rectangle
+plus
 switch.2
 translate
 xmark
