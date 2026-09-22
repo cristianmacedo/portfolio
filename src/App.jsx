@@ -396,6 +396,8 @@ const projects = [
     id: "prettygit",
     name: "PrettyGit",
     href: "https://github.com/cristianmacedo/prettygit",
+    liveUrl:
+      "https://chromewebstore.google.com/detail/prettygit/hiacbakfjladopdjbdlbbncidjnngjlb",
     image: "prettygit-cover.png",
     category: "prettygitCategory",
     tech: ["Browser Extension", "JavaScript", "GitHub"],
