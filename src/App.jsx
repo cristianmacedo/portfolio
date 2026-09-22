@@ -377,7 +377,7 @@ const projects = [
     href: "https://github.com/cristianmacedo/innerbilliards",
     image: "innerbilliards-cover.png",
     category: "innerbilliardsCategory",
-    tech: ["Trajectory simulator", "Geometry editor", "Motion model"],
+    tech: ["React", "Vite"],
     copy: "innerbilliardsCopy",
   },
   {
@@ -386,7 +386,7 @@ const projects = [
     href: "https://github.com/cristianmacedo/senalytics",
     image: "senalytics-cover.png",
     category: "senalyticsCategory",
-    tech: ["React 19", "TypeScript", "React Query", "Recharts"],
+    tech: ["React", "TypeScript", "React Query", "Recharts"],
     copy: "senalyticsCopy",
     detail: "senalyticsDetail",
   },
