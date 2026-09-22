@@ -1305,20 +1305,22 @@ header.system-bar { z-index: 1; }
   width: 100vw;
   margin-inline: calc(50% - 50vw);
   --carousel-gutter: max(32px, calc((100vw - 1504px) / 2 + 32px));
-  padding-left: var(--carousel-gutter);
   min-width: 0;
 }
 .project-carousel {
   display: grid;
   grid-auto-flow: column;
+  grid-template-columns: var(--carousel-gutter);
   grid-auto-columns: clamp(250px, 23vw, 310px);
   gap: 26px;
   padding: 2px 0 12px;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scroll-snap-type: inline mandatory;
+  scroll-padding-inline-start: var(--carousel-gutter);
   scrollbar-width: none;
 }
+.project-carousel-gutter { grid-column: 1; }
 .project-carousel::-webkit-scrollbar { display: none; }
 .project-showcase-card {
   position: relative;

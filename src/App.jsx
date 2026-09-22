@@ -523,6 +523,7 @@ function Projects({ t }) {
           ref={railRef}
           aria-label={t.projectsCarousel}
         >
+          <div className="project-carousel-gutter" aria-hidden="true" />
           {projects.map((project) => (
             <article className="project-showcase-card" key={project.id}>
               <img
