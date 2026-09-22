@@ -375,6 +375,7 @@ const projects = [
     id: "innerbilliards",
     name: "InnerBilliards",
     href: "https://github.com/cristianmacedo/innerbilliards",
+    liveUrl: "https://innerbilliards.vercel.app",
     image: "innerbilliards-cover.png",
     category: "innerbilliardsCategory",
     tech: ["React", "Vite"],
@@ -384,6 +385,7 @@ const projects = [
     id: "senalytics",
     name: "Senalytics",
     href: "https://github.com/cristianmacedo/senalytics",
+    liveUrl: "https://senalytics.vercel.app",
     image: "senalytics-cover.png",
     category: "senalyticsCategory",
     tech: ["React", "TypeScript", "React Query", "Recharts"],
@@ -403,6 +405,7 @@ const projects = [
     id: "spendbox",
     name: "SpendBox",
     href: "https://github.com/cristianmacedo/spendbox",
+    liveUrl: "https://spendbox.vercel.app",
     image: "spendbox-cover.png",
     category: "spendboxCategory",
     tech: ["Next.js", "Zustand", "Product UI"],
@@ -463,15 +466,28 @@ function ProjectDialog({ project, t, onClose }) {
             <span key={item}>{item}</span>
           ))}
         </div>
-        <a
-          className="project-dialog-link"
-          href={project.href}
-          target="_blank"
-          rel="noopener"
-        >
-          <span>{t.viewRepository}</span>
-          <SfSymbol name="arrow.up.right" />
-        </a>
+        <div className="project-dialog-actions">
+          {project.liveUrl && (
+            <a
+              className="project-dialog-link project-dialog-live-link"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener"
+            >
+              <span>{t.viewProject}</span>
+              <SfSymbol name="arrow.up.right" />
+            </a>
+          )}
+          <a
+            className="project-dialog-link"
+            href={project.href}
+            target="_blank"
+            rel="noopener"
+          >
+            <span>{t.viewRepository}</span>
+            <SfSymbol name="arrow.up.right" />
+          </a>
+        </div>
       </div>
     </dialog>
   );
