@@ -131,7 +131,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
   const triggerRef = useRef(null);
   const systemTime = useSystemClock(language);
   const navItems = [
-    ['work', t.navWork], ['side-projects', t.navProjects], ['journey', t.navJourney], ['about', t.navAbout],
+    ['work', t.navWork], ['about', t.navAbout], ['side-projects', t.navProjects], ['journey', t.navJourney],
   ];
 
   useEffect(() => {
