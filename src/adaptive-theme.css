@@ -1280,12 +1280,18 @@ header.system-bar { z-index: 1; }
 
 /* A reminder label shares the exact vertical center of its completion control. */
 .reminders-list li {
-  align-items: center;
+  align-items: start;
+}
+.reminders-list li > .reminder-toggle {
+  height: 34px;
+  min-height: 34px;
 }
 .reminders-list li > .reminder-copy {
   display: block !important;
   min-height: 0;
-  align-self: center;
+  align-self: start;
+  padding: 7px 0 !important;
+  line-height: 20px !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
