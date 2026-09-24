@@ -1278,6 +1278,16 @@ header.system-bar { z-index: 1; }
   opacity: .7;
 }
 
+/* A reminder label shares the exact vertical center of its completion control. */
+.reminders-list li {
+  align-items: center;
+}
+.reminders-list li > .reminder-copy {
+  display: flex !important;
+  align-items: center;
+  min-height: 34px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reminder-check::after { transition: none; }
 }
