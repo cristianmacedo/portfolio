@@ -76,6 +76,9 @@ export default function Spotlight({
     return items.filter((item) => normalize(`${item.label} ${item.category} ${item.keywords}`).includes(term)).slice(0, 8);
   }, [items, query]);
 
+  const hasQuery = Boolean(query.trim());
+  const resultsHeight = Math.min((results.length || 1) * 45 + 15, 440);
+
   useEffect(() => {
     if (!open) return;
     setQuery("");
@@ -129,13 +132,23 @@ export default function Spotlight({
   const startDrag = (event) => {
     if (!shellRef.current) return;
     const rect = shellRef.current.getBoundingClientRect();
-    dragRef.current = { pointerId: event.pointerId, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top };
+    dragRef.current = {
+      pointerId: event.pointerId,
+      offsetX: event.clientX - rect.left,
+      offsetY: event.clientY - rect.top,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+      actionId: event.target.closest("[data-spotlight-id]")?.dataset.spotlightId,
+    };
     event.currentTarget.setPointerCapture(event.pointerId);
-    setPosition({ x: rect.left, y: rect.top });
   };
 
   const drag = (event) => {
     if (!dragRef.current || dragRef.current.pointerId !== event.pointerId || !shellRef.current) return;
+    const distance = Math.hypot(event.clientX - dragRef.current.startX, event.clientY - dragRef.current.startY);
+    if (!dragRef.current.moved && distance < 4) return;
+    dragRef.current.moved = true;
     const rect = shellRef.current.getBoundingClientRect();
     setPosition({
       x: Math.min(Math.max(8, event.clientX - dragRef.current.offsetX), window.innerWidth - rect.width - 8),
@@ -144,31 +157,41 @@ export default function Spotlight({
   };
 
   const stopDrag = (event) => {
-    if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null;
+    if (dragRef.current?.pointerId !== event.pointerId) return;
+    const { actionId, moved } = dragRef.current;
+    dragRef.current = null;
+    if (!moved && actionId) {
+      const item = results.find((candidate) => candidate.id === actionId);
+      if (item) run(item);
+    }
+    requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
   };
 
   if (!open) return null;
 
   return (
     <div
-      className={`spotlight${results.length ? " has-results" : ""}${position ? " is-positioned" : ""}`}
+      className={`spotlight${hasQuery ? " has-results" : ""}${position ? " is-positioned" : ""}`}
       ref={shellRef}
       role="dialog"
       aria-label={language === "pt" ? "Busca do Spotlight" : "Spotlight Search"}
       style={position ? { left: position.x, top: position.y } : undefined}
+      onPointerDown={(event) => {
+        event.preventDefault();
+        inputRef.current?.focus({ preventScroll: true });
+        startDrag(event);
+      }}
+      onPointerMove={drag}
+      onPointerUp={stopDrag}
+      onPointerCancel={stopDrag}
     >
       <div className="spotlight-search">
-        <button
+        <span
           className="spotlight-drag-handle"
-          type="button"
-          aria-label={language === "pt" ? "Arrastar Spotlight" : "Drag Spotlight"}
-          onPointerDown={startDrag}
-          onPointerMove={drag}
-          onPointerUp={stopDrag}
-          onPointerCancel={stopDrag}
+          aria-hidden="true"
         >
           <SfSymbol name="magnifyingglass" />
-        </button>
+        </span>
         <input
           ref={inputRef}
           value={query}
@@ -181,26 +204,39 @@ export default function Spotlight({
           aria-controls="spotlight-results"
           aria-activedescendant={results[activeIndex] ? `spotlight-${results[activeIndex].id}` : undefined}
           autoComplete="off"
+          onBlur={() => requestAnimationFrame(() => open && inputRef.current?.focus({ preventScroll: true }))}
         />
       </div>
-      {query && (
-        <div className="spotlight-results" id="spotlight-results" role="listbox">
+      <div
+        className={`spotlight-results${hasQuery ? " is-visible" : ""}`}
+        id="spotlight-results"
+        role="listbox"
+        aria-hidden={!hasQuery}
+        style={{ "--spotlight-results-height": `${resultsHeight}px` }}
+      >
+        {hasQuery && (
+          <>
           {results.length ? results.map((item, index) => (
             <button
               id={`spotlight-${item.id}`}
               key={item.id}
+              data-spotlight-id={item.id}
               type="button"
               role="option"
               aria-selected={index === activeIndex}
               className={index === activeIndex ? "active" : ""}
+              tabIndex={-1}
               onMouseEnter={() => setActiveIndex(index)}
-              onClick={() => run(item)}
+              onClick={(event) => {
+                if (event.detail === 0) run(item);
+              }}
             >
               <span>{item.label}</span><small>{item.category}</small>
             </button>
           )) : <p>{language === "pt" ? "Nenhum resultado" : "No results"}</p>}
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
