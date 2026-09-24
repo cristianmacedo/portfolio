@@ -865,6 +865,7 @@ function useActiveSection() {
 }
 
 export default function App() {
+  const memojiFramesRef = useRef([]);
   const [language, setLanguage] = useState(() =>
     readStorage(
       "portfolio-language",
@@ -914,10 +915,14 @@ export default function App() {
   }, [focusMode]);
 
   useEffect(() => {
-    FRAME_IDS.forEach((id) => {
+    memojiFramesRef.current = FRAME_IDS.map((id) => {
       const image = new Image();
       image.src = `${import.meta.env.BASE_URL}assets/cristian-memoji-dark-to-light-transition-${id}.png`;
+      return image;
     });
+    return () => {
+      memojiFramesRef.current = [];
+    };
   }, []);
 
   useGlassReflection([focusMode]);
