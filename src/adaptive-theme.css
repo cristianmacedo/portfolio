@@ -1485,8 +1485,8 @@ dialog.project-dialog[open] { display: grid; }
 
 /* The brand owns a compact macOS-style application menu. */
 .system-brand {
-  padding: 5px 8px;
-  border-radius: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
   color: var(--text);
   background: transparent;
   line-height: 1;
@@ -1507,21 +1507,35 @@ dialog.project-dialog[open] { display: grid; }
   z-index: 2147483647;
   width: min(310px, calc(100vw - 24px));
   padding: 6px;
-  border: 1px solid rgba(255, 255, 255, .22);
-  border-radius: 14px;
+  border: 2px solid transparent;
+  border-radius: 16px;
   color: #f4f4f6;
-  background: rgba(38, 38, 40, .86);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, .42), inset 0 1px 0 rgba(255, 255, 255, .12);
-  backdrop-filter: blur(28px) saturate(150%);
-  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  background: rgba(255, 255, 255, .08);
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .38), 0 16px 32px rgba(0, 0, 0, .18);
+  backdrop-filter: blur(22px) saturate(155%);
+  -webkit-backdrop-filter: blur(22px) saturate(155%);
+  isolation: auto;
   transform-origin: top left;
   animation: system-popover-in .16s cubic-bezier(.2, .75, .2, 1) both;
 }
 .light .brand-menu {
-  border-color: rgba(35, 36, 40, .2);
   color: #232426;
-  background: rgba(246, 246, 248, .88);
-  box-shadow: 0 18px 50px rgba(55, 44, 37, .18), inset 0 1px 0 rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, .18);
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .72), 0 16px 32px rgba(35, 28, 24, .13);
+}
+.brand-menu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(var(--glass-angle), transparent 10%, rgba(255, 255, 255, .42) 42%, rgba(240, 138, 87, .13) 58%, transparent 88%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: .55;
 }
 .brand-menu button {
   width: 100%;
@@ -1542,14 +1556,14 @@ dialog.project-dialog[open] { display: grid; }
 }
 
 dialog.about-portfolio-dialog {
-  width: min(620px, calc(100% - 32px));
-  max-width: 620px;
-  min-height: min(760px, calc(100dvh - 32px));
+  width: min(500px, calc(100% - 32px));
+  max-width: 500px;
+  min-height: min(680px, calc(100dvh - 32px));
   max-height: calc(100dvh - 32px);
-  padding: 0 48px 42px;
+  padding: 0 38px 34px;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, .28);
-  border-radius: 30px;
+  border-radius: 24px;
   color: #f1f1f3;
   background: rgba(27, 27, 29, .96);
   box-shadow: 0 36px 110px rgba(0, 0, 0, .64), inset 0 1px 0 rgba(255, 255, 255, .12);
@@ -1571,17 +1585,17 @@ dialog.about-portfolio-dialog[open] {
   -webkit-backdrop-filter: blur(18px) saturate(115%);
 }
 .about-window-controls {
-  width: calc(100% + 64px);
-  height: 70px;
+  width: calc(100% + 48px);
+  height: 54px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   align-self: center;
 }
 .about-window-controls button,
 .about-window-controls span {
-  width: 28px;
-  height: 28px;
+  width: 16px;
+  height: 16px;
   flex: 0 0 auto;
   border-radius: 50%;
   background: #4a4a4c;
@@ -1592,22 +1606,22 @@ dialog.about-portfolio-dialog[open] {
 .light .about-window-controls span { background: #d0d0d3; }
 .about-portfolio-art {
   position: relative;
-  width: 320px;
-  height: 245px;
-  margin-top: 12px;
+  width: 260px;
+  height: 198px;
+  margin-top: 8px;
   display: grid;
   place-items: center;
 }
 .about-browser {
   position: relative;
   z-index: 1;
-  width: 250px;
-  height: 158px;
+  width: 202px;
+  height: 128px;
   display: grid;
   place-items: center;
-  border: 6px solid #77797d;
-  border-bottom-width: 10px;
-  border-radius: 11px 11px 5px 5px;
+  border: 5px solid #77797d;
+  border-bottom-width: 8px;
+  border-radius: 9px 9px 4px 4px;
   background: radial-gradient(circle at 20% 15%, rgba(240, 138, 87, .48), transparent 34%), radial-gradient(circle at 82% 85%, rgba(112, 90, 255, .34), transparent 38%), #202124;
   box-shadow: inset 0 0 0 2px #101113, 0 16px 35px rgba(0, 0, 0, .35);
 }
@@ -1616,7 +1630,7 @@ dialog.about-portfolio-dialog[open] {
   top: 0;
   left: 0;
   right: 0;
-  height: 18px;
+  height: 15px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -1624,13 +1638,13 @@ dialog.about-portfolio-dialog[open] {
   background: rgba(12, 12, 14, .72);
 }
 .about-browser-bar i { width: 5px; height: 5px; border-radius: 50%; background: #666; }
-.about-browser strong { font-size: 54px; line-height: 1; letter-spacing: -5px; color: #f4f4f4; }
+.about-browser strong { font-size: 44px; line-height: 1; letter-spacing: -4px; color: #f4f4f4; }
 .about-browser strong span { color: var(--orange); }
 .about-browser-base {
   position: absolute;
-  bottom: 34px;
-  width: 306px;
-  height: 13px;
+  bottom: 28px;
+  width: 248px;
+  height: 11px;
   border-radius: 2px 2px 12px 12px;
   background: linear-gradient(#bfc0c3, #686a6e 52%, #343539);
   box-shadow: 0 8px 10px rgba(0, 0, 0, .28);
@@ -1640,55 +1654,55 @@ dialog.about-portfolio-dialog[open] {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 46px;
+  width: 38px;
   height: 3px;
   border-radius: 0 0 4px 4px;
   background: #55565a;
   transform: translateX(-50%);
 }
-.about-portfolio-copy { margin-top: 6px; text-align: center; }
-.about-portfolio-copy h2 { margin: 0; font-size: 34px; font-weight: 700; letter-spacing: -1.2px; }
-.about-portfolio-copy p { margin: 5px 0 0; color: #6f6f72; font-size: 17px; font-weight: 650; line-height: 1.3; }
-.about-portfolio-specs { width: min(100%, 390px); margin: 34px 0 0; }
-.about-portfolio-specs div { display: grid; grid-template-columns: 1fr 1.25fr; gap: 18px; font-size: 15px; line-height: 1.45; }
+.about-portfolio-copy { margin-top: 4px; text-align: center; }
+.about-portfolio-copy h2 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -.9px; }
+.about-portfolio-copy p { margin: 4px 0 0; color: #6f6f72; font-size: 14px; font-weight: 650; line-height: 1.3; }
+.about-portfolio-specs { width: min(100%, 330px); margin: 27px 0 0; }
+.about-portfolio-specs div { display: grid; grid-template-columns: 1fr 1.25fr; gap: 15px; font-size: 13px; line-height: 1.45; }
 .about-portfolio-specs dt { text-align: right; font-weight: 650; }
 .about-portfolio-specs dd { margin: 0; color: #98989c; }
 .about-portfolio-action {
-  margin-top: 34px;
-  padding: 9px 24px;
-  border-radius: 10px;
+  margin-top: 28px;
+  padding: 8px 20px;
+  border-radius: 9px;
   color: inherit;
   background: #3a3a3c;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 560;
 }
 .about-portfolio-action:hover { background: #47474a; filter: none; }
 .light .about-portfolio-action { background: #dedee1; }
 .light .about-portfolio-action:hover { background: #d2d2d6; }
 .about-portfolio-footer {
-  margin: 28px 0 0;
+  margin: 23px 0 0;
   color: #5f5f62;
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 550;
   line-height: 1.45;
 }
 
 @media (max-width: 650px) {
   dialog.about-portfolio-dialog {
-    min-height: min(680px, calc(100dvh - 20px));
+    min-height: min(620px, calc(100dvh - 20px));
     max-height: calc(100dvh - 20px);
     padding: 0 24px 30px;
     border-radius: 24px;
   }
-  .about-window-controls { width: calc(100% + 24px); height: 58px; gap: 10px; }
+  .about-window-controls { width: calc(100% + 24px); height: 50px; gap: 9px; }
   .about-window-controls button,
-  .about-window-controls span { width: 22px; height: 22px; }
-  .about-portfolio-art { width: 260px; height: 205px; }
-  .about-browser { width: 210px; height: 134px; }
-  .about-browser-base { bottom: 29px; width: 254px; }
-  .about-portfolio-copy h2 { font-size: 29px; }
-  .about-portfolio-specs { margin-top: 28px; }
+  .about-window-controls span { width: 15px; height: 15px; }
+  .about-portfolio-art { width: 240px; height: 184px; }
+  .about-browser { width: 188px; height: 120px; }
+  .about-browser-base { bottom: 25px; width: 228px; }
+  .about-portfolio-copy h2 { font-size: 26px; }
+  .about-portfolio-specs { margin-top: 24px; }
   .about-portfolio-specs div { grid-template-columns: .9fr 1.2fr; gap: 13px; font-size: 13px; }
 }
 
