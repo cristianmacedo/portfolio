@@ -1558,7 +1558,6 @@ dialog.project-dialog[open] { display: grid; }
 dialog.about-portfolio-dialog {
   width: min(500px, calc(100% - 32px));
   max-width: 500px;
-  min-height: min(680px, calc(100dvh - 32px));
   max-height: calc(100dvh - 32px);
   padding: 0 28px 28px;
   overflow-x: hidden;
@@ -1715,7 +1714,6 @@ dialog.about-portfolio-dialog[open] {
 
 @media (max-width: 650px) {
   dialog.about-portfolio-dialog {
-    min-height: min(620px, calc(100dvh - 20px));
     max-height: calc(100dvh - 20px);
     padding: 0 20px 24px;
     border-radius: 24px;
