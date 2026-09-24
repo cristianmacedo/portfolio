@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import SfSymbol from "../ui/SfSymbol";
 
 export default function AboutPortfolioDialog({ language, open, onClose }) {
   const dialogRef = useRef(null);
@@ -54,7 +55,9 @@ export default function AboutPortfolioDialog({ language, open, onClose }) {
       }}
     >
       <div className="about-window-controls">
-        <button type="button" onClick={onClose} aria-label={language === "pt" ? "Fechar" : "Close"} />
+        <button type="button" onClick={onClose} aria-label={language === "pt" ? "Fechar" : "Close"}>
+          <SfSymbol name="xmark" />
+        </button>
         <span aria-hidden="true" />
         <span aria-hidden="true" />
       </div>
