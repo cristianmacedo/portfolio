@@ -1561,6 +1561,7 @@ dialog.about-portfolio-dialog {
   min-height: min(680px, calc(100dvh - 32px));
   max-height: calc(100dvh - 32px);
   padding: 0 38px 34px;
+  overflow-x: hidden;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, .28);
   border-radius: 24px;
@@ -1585,7 +1586,7 @@ dialog.about-portfolio-dialog[open] {
   -webkit-backdrop-filter: blur(18px) saturate(115%);
 }
 .about-window-controls {
-  width: calc(100% + 48px);
+  width: 100%;
   height: 54px;
   display: flex;
   align-items: center;
@@ -1717,7 +1718,7 @@ dialog.about-portfolio-dialog[open] {
     padding: 0 24px 30px;
     border-radius: 24px;
   }
-  .about-window-controls { width: calc(100% + 24px); height: 50px; gap: 9px; }
+  .about-window-controls { width: 100%; height: 50px; gap: 9px; }
   .about-window-controls button,
   .about-window-controls span { width: 15px; height: 15px; }
   .about-portfolio-art { width: 240px; height: 184px; }
