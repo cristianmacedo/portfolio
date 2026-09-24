@@ -166,19 +166,11 @@ function Highlights({ t }) {
   });
   const [customItems, setCustomItems] = useState([]);
   const [edits, setEdits] = useState({});
-  const [pendingFocus, setPendingFocus] = useState(null);
-  const inputRefs = useRef(new Map());
+  const draftRef = useRef(null);
   const items = [
     ...defaults.map((item) => ({ ...item, ...edits[item.id] })),
     ...customItems,
   ].sort((a, b) => a.position - b.position);
-
-  useEffect(() => {
-    if (!pendingFocus) return;
-    const editor = inputRefs.current.get(pendingFocus);
-    editor?.focus();
-    setPendingFocus(null);
-  }, [customItems, pendingFocus]);
 
   const toggle = (id) =>
     setCompleted((value) => ({ ...value, [id]: !value[id] }));
@@ -198,34 +190,57 @@ function Highlights({ t }) {
       [item.id]: { ...current[item.id], ...changes },
     }));
   };
-  const addAfter = (item) => {
-    const index = items.findIndex((candidate) => candidate.id === item.id);
-    const nextPosition = items[index + 1]?.position;
-    const position =
-      nextPosition == null
-        ? item.position + 1
-        : (item.position + nextPosition) / 2;
+  const addDraftItem = (detail) => {
+    if (!detail.trim()) return;
     const id = `custom-${Date.now()}`;
     setCustomItems((value) => [
       ...value,
-      { id, title: "", detail: "", position },
+      {
+        id,
+        title: "",
+        detail,
+        position: Math.max(...items.map((item) => item.position)) + 1,
+      },
     ]);
     setCompleted((value) => ({ ...value, [id]: false }));
-    setPendingFocus(id);
   };
   const commitItem = (item, element) => {
     const title = element.querySelector("b")?.textContent ?? "";
     const text = element.textContent ?? "";
+    const detail = text.slice(title.length).trimStart().slice(0, 96);
+    if (!title.trim() && !detail.trim()) {
+      if (item.id.startsWith("custom-")) {
+        setCustomItems((current) =>
+          current.filter((candidate) => candidate.id !== item.id),
+        );
+        return;
+      }
+      element.replaceChildren();
+      if (item.title) {
+        const emphasis = document.createElement("b");
+        emphasis.textContent = item.title;
+        element.append(emphasis);
+      }
+      if (item.title && item.detail) element.append(" ");
+      if (item.detail) element.append(item.detail);
+      return;
+    }
     updateItem(item, {
       title: title.slice(0, 64),
-      detail: text.slice(title.length).trimStart().slice(0, 96),
+      detail,
     });
   };
   const handleEnter = (event, item) => {
     if (event.key !== "Enter") return;
     event.preventDefault();
     commitItem(item, event.currentTarget);
-    addAfter(item);
+    draftRef.current?.focus();
+  };
+  const commitDraft = (element) => {
+    const text = (element.textContent ?? "").trim().slice(0, 160);
+    if (!text) return;
+    addDraftItem(text);
+    element.textContent = "";
   };
   const moveCursorToEnd = (event) => {
     const editor = event.currentTarget;
@@ -267,29 +282,45 @@ function Highlights({ t }) {
               />
             </button>
             <div
-                ref={(node) =>
-                  node
-                    ? inputRefs.current.set(item.id, node)
-                    : inputRefs.current.delete(item.id)
-                }
-                className="reminder-copy"
-                contentEditable
-                suppressContentEditableWarning
-                role="textbox"
-                aria-multiline="false"
-                aria-label={`${item.title} ${item.detail}`.trim() || t.newReminder}
-                data-placeholder={t.newReminder}
-                onFocus={moveCursorToEnd}
-                onClick={moveCursorToEnd}
-                onKeyDown={(event) => handleEnter(event, item)}
-                onBlur={(event) => commitItem(item, event.currentTarget)}
-              >
-                {item.title && <b>{item.title}</b>}
-                {item.title && item.detail ? " " : ""}
-                {item.detail}
-              </div>
+              className="reminder-copy"
+              contentEditable
+              suppressContentEditableWarning
+              role="textbox"
+              aria-multiline="false"
+              aria-label={`${item.title} ${item.detail}`.trim() || t.newReminder}
+              data-placeholder={t.newReminder}
+              onFocus={moveCursorToEnd}
+              onClick={moveCursorToEnd}
+              onKeyDown={(event) => handleEnter(event, item)}
+              onBlur={(event) => commitItem(item, event.currentTarget)}
+            >
+              {item.title && <b>{item.title}</b>}
+              {item.title && item.detail ? " " : ""}
+              {item.detail}
+            </div>
           </li>
         ))}
+        <li className="reminder-draft">
+          <span className="reminder-toggle" aria-hidden="true">
+            <span className="reminder-check" />
+          </span>
+          <div
+            ref={draftRef}
+            className="reminder-copy"
+            contentEditable
+            suppressContentEditableWarning
+            role="textbox"
+            aria-multiline="false"
+            aria-label={t.newReminder}
+            data-placeholder={t.newReminder}
+            onKeyDown={(event) => {
+              if (event.key !== "Enter") return;
+              event.preventDefault();
+              commitDraft(event.currentTarget);
+            }}
+            onBlur={(event) => commitDraft(event.currentTarget)}
+          />
+        </li>
       </ul>
     </section>
   );
