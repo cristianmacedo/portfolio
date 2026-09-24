@@ -1601,13 +1601,24 @@ dialog.about-portfolio-dialog[open] {
   background: #4a4a4c;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
 }
-.about-window-controls button { display: grid; place-items: center; padding: 0; background: #ff5f57; }
+.about-window-controls button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #763433;
+  background: #ec6765;
+}
 .about-window-controls button:hover { filter: brightness(1.06); }
 .about-window-controls button .sf-symbol {
-  width: 9px;
-  height: 9px;
+  width: 11px;
+  height: 11px;
   margin: auto;
-  color: rgba(91, 13, 18, .78);
+  color: #763433;
+  filter:
+    drop-shadow(.35px 0 0 #763433)
+    drop-shadow(-.35px 0 0 #763433)
+    drop-shadow(0 .35px 0 #763433)
+    drop-shadow(0 -.35px 0 #763433);
   opacity: 0;
   transition: opacity .12s ease;
 }
