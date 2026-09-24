@@ -9,6 +9,7 @@ chevron.left
 chevron.right
 circle.lefthalf.filled
 command
+magnifyingglass
 dollarsign
 person.text.rectangle
 plus

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import SfSymbol from '../ui/SfSymbol';
 import BrandIcon from '../ui/BrandIcon';
 import AboutPortfolioDialog from './AboutPortfolioDialog';
+import Spotlight from './Spotlight';
 
 function FocusIcon() {
   return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
@@ -130,6 +131,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
   const [open, setOpen] = useState(false);
   const [brandMenuOpen, setBrandMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [spotlightOpen, setSpotlightOpen] = useState(false);
   const rootRef = useRef(null);
   const brandTriggerRef = useRef(null);
   const brandMenuRef = useRef(null);
@@ -164,7 +166,19 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
     if (brandMenuOpen) brandMenuRef.current?.querySelector('[role="menuitem"]')?.focus();
   }, [brandMenuOpen]);
 
-  return <div className={`system-bar-layer${open || brandMenuOpen ? ' control-center-open' : ''}`} ref={rootRef}>
+  useEffect(() => {
+    const toggleSpotlight = (event) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'k') return;
+      event.preventDefault();
+      setOpen(false);
+      setBrandMenuOpen(false);
+      setSpotlightOpen((value) => !value);
+    };
+    window.addEventListener('keydown', toggleSpotlight);
+    return () => window.removeEventListener('keydown', toggleSpotlight);
+  }, []);
+
+  return <div className={`system-bar-layer${open || brandMenuOpen || spotlightOpen ? ' control-center-open' : ''}`} ref={rootRef}>
     <header className="system-bar">
       <button
         className="system-brand"
@@ -175,6 +189,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
         aria-expanded={brandMenuOpen}
         onClick={() => {
           setOpen(false);
+          setSpotlightOpen(false);
           setBrandMenuOpen((value) => !value);
         }}
       >cm<span>.</span></button>
@@ -189,7 +204,8 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
         {focusMode && <button className="system-focus-status" type="button" onClick={onFocus} aria-label={t.focusDisable}><FocusIcon /><span>{t.focusTitle}</span></button>}
         <NetworkStatus language={language} />
         <BatteryStatus language={language} />
-        <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => { setBrandMenuOpen(false); setOpen((value) => !value); }} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><SfSymbol name="switch.2" /></button>
+        <button className="spotlight-trigger" type="button" onClick={() => { setOpen(false); setBrandMenuOpen(false); setSpotlightOpen((value) => !value); }} aria-label={language === 'pt' ? 'Abrir Busca do Spotlight' : 'Open Spotlight Search'} aria-expanded={spotlightOpen}><SfSymbol name="magnifyingglass" /></button>
+        <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => { setBrandMenuOpen(false); setSpotlightOpen(false); setOpen((value) => !value); }} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><SfSymbol name="switch.2" /></button>
         <time className="system-clock" dateTime={new Date().toISOString()}>{systemTime}</time>
       </div>
     </header>
@@ -199,6 +215,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
       </button>
     </div>}
     {open && <ControlCenter t={t} language={language} isLight={isLight} focusMode={focusMode} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} onClose={() => setOpen(false)} triggerRef={triggerRef} />}
+    <Spotlight language={language} isLight={isLight} focusMode={focusMode} open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} />
     <AboutPortfolioDialog language={language} open={aboutOpen} onClose={() => setAboutOpen(false)} />
   </div>;
 }
