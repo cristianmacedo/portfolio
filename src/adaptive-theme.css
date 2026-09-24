@@ -1283,9 +1283,9 @@ header.system-bar { z-index: 1; }
   align-items: center;
 }
 .reminders-list li > .reminder-copy {
-  display: flex !important;
-  align-items: center;
-  min-height: 34px;
+  display: block !important;
+  min-height: 0;
+  align-self: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
