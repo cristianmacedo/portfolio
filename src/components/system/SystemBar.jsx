@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import SfSymbol from '../SfSymbol';
-import BrandIcon from '../BrandIcon';
+import SfSymbol from '../ui/SfSymbol';
+import BrandIcon from '../ui/BrandIcon';
 
 function FocusIcon() {
   return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
