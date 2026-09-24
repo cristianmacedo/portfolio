@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SfSymbol from '../ui/SfSymbol';
 import BrandIcon from '../ui/BrandIcon';
+import AboutPortfolioDialog from './AboutPortfolioDialog';
 
 function FocusIcon() {
   return <span className="focus-icon" aria-hidden="true"><SfSymbol name="person.text.rectangle" /></span>;
@@ -127,7 +128,11 @@ function useSystemClock(language) {
 
 export default function SystemBar({ t, language, isLight, focusMode, activeSection, onLanguage, onTheme, onFocus }) {
   const [open, setOpen] = useState(false);
+  const [brandMenuOpen, setBrandMenuOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const rootRef = useRef(null);
+  const brandTriggerRef = useRef(null);
+  const brandMenuRef = useRef(null);
   const triggerRef = useRef(null);
   const systemTime = useSystemClock(language);
   const navItems = [
@@ -135,17 +140,44 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
   ];
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open && !brandMenuOpen) return undefined;
     const dismiss = (event) => {
-      if (!rootRef.current?.contains(event.target)) setOpen(false);
+      if (!rootRef.current?.contains(event.target)) {
+        setOpen(false);
+        setBrandMenuOpen(false);
+      }
+    };
+    const dismissWithKeyboard = (event) => {
+      if (event.key !== 'Escape' || !brandMenuOpen) return;
+      setBrandMenuOpen(false);
+      brandTriggerRef.current?.focus();
     };
     document.addEventListener('pointerdown', dismiss);
-    return () => document.removeEventListener('pointerdown', dismiss);
-  }, [open]);
+    document.addEventListener('keydown', dismissWithKeyboard);
+    return () => {
+      document.removeEventListener('pointerdown', dismiss);
+      document.removeEventListener('keydown', dismissWithKeyboard);
+    };
+  }, [open, brandMenuOpen]);
 
-  return <div className={`system-bar-layer${open ? ' control-center-open' : ''}`} ref={rootRef}>
+  useEffect(() => {
+    if (brandMenuOpen) brandMenuRef.current?.querySelector('[role="menuitem"]')?.focus();
+  }, [brandMenuOpen]);
+
+  return <div className={`system-bar-layer${open || brandMenuOpen ? ' control-center-open' : ''}`} ref={rootRef}>
     <header className="system-bar">
-      <a className="system-brand" href="#" aria-label="Cristian Macedo home">cm<span>.</span></a>
+      <button
+        className="system-brand"
+        type="button"
+        ref={brandTriggerRef}
+        aria-label={language === 'pt' ? 'Menu de Cristian Macedo' : 'Cristian Macedo menu'}
+        aria-haspopup="menu"
+        aria-expanded={brandMenuOpen}
+        onClick={() => {
+          setOpen(false);
+          setBrandMenuOpen((value) => !value);
+        }}
+      >cm<span>.</span></button>
       <nav className="system-nav" aria-label={t.mainNavigation}>
         {navItems.map(([id, label]) => {
           const disabled = focusMode && id === 'side-projects';
@@ -157,10 +189,16 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
         {focusMode && <button className="system-focus-status" type="button" onClick={onFocus} aria-label={t.focusDisable}><FocusIcon /><span>{t.focusTitle}</span></button>}
         <NetworkStatus language={language} />
         <BatteryStatus language={language} />
-        <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => setOpen((value) => !value)} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><SfSymbol name="switch.2" /></button>
+        <button className="control-center-trigger" type="button" ref={triggerRef} onClick={() => { setBrandMenuOpen(false); setOpen((value) => !value); }} aria-label={t.controlCenter} aria-haspopup="dialog" aria-expanded={open}><SfSymbol name="switch.2" /></button>
         <time className="system-clock" dateTime={new Date().toISOString()}>{systemTime}</time>
       </div>
     </header>
+    {brandMenuOpen && <div className="brand-menu" role="menu" ref={brandMenuRef}>
+      <button type="button" role="menuitem" onClick={() => { setBrandMenuOpen(false); setAboutOpen(true); }}>
+        {language === 'pt' ? 'Sobre este portfólio' : 'About this portfolio'}
+      </button>
+    </div>}
     {open && <ControlCenter t={t} language={language} isLight={isLight} focusMode={focusMode} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} onClose={() => setOpen(false)} triggerRef={triggerRef} />}
+    <AboutPortfolioDialog language={language} open={aboutOpen} onClose={() => setAboutOpen(false)} />
   </div>;
 }
