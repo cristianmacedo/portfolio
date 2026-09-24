@@ -1259,12 +1259,8 @@ header.system-bar { z-index: 1; }
 .reminder-check.is-complete::after { transform: scale(1); }
 
 .reminder-copy {
-  display: flex !important;
-  align-items: center;
-  gap: .28em;
-  min-width: 0;
-}
-.reminder-copy input {
+  display: block !important;
+  width: 100%;
   min-width: 0;
   padding: 0;
   border: 0;
@@ -1273,26 +1269,13 @@ header.system-bar { z-index: 1; }
   background: transparent;
   font: inherit;
   line-height: inherit;
+  caret-color: var(--orange);
+  overflow-wrap: anywhere;
 }
-.reminder-copy input::placeholder {
+.reminder-copy:empty::before {
+  content: attr(data-placeholder);
   color: var(--muted);
   opacity: .7;
-}
-.reminder-title-input {
-  flex: 0 1 auto;
-  max-width: 54%;
-  font-weight: 650 !important;
-}
-.reminder-title-input:only-child {
-  flex: 1 1 auto;
-  max-width: none;
-}
-.reminder-detail-input {
-  flex: 1 1 auto;
-  font-weight: 400;
-}
-.reminder-copy input:focus {
-  caret-color: var(--orange);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -175,20 +175,19 @@ function Highlights({ t }) {
 
   useEffect(() => {
     if (!pendingFocus) return;
-    const input = inputRefs.current.get(pendingFocus);
-    input?.focus();
-    input?.setSelectionRange(0, input.value.length);
+    const editor = inputRefs.current.get(pendingFocus);
+    editor?.focus();
     setPendingFocus(null);
   }, [customItems, pendingFocus]);
 
   const toggle = (id) =>
     setCompleted((value) => ({ ...value, [id]: !value[id] }));
-  const updateItem = (item, field, value) => {
+  const updateItem = (item, changes) => {
     if (item.id.startsWith("custom-")) {
       setCustomItems((current) =>
         current.map((candidate) =>
           candidate.id === item.id
-            ? { ...candidate, [field]: value }
+            ? { ...candidate, ...changes }
             : candidate,
         ),
       );
@@ -196,7 +195,7 @@ function Highlights({ t }) {
     }
     setEdits((current) => ({
       ...current,
-      [item.id]: { ...current[item.id], [field]: value },
+      [item.id]: { ...current[item.id], ...changes },
     }));
   };
   const addAfter = (item) => {
@@ -214,16 +213,30 @@ function Highlights({ t }) {
     setCompleted((value) => ({ ...value, [id]: false }));
     setPendingFocus(id);
   };
+  const commitItem = (item, element) => {
+    const title = element.querySelector("b")?.textContent ?? "";
+    const text = element.textContent ?? "";
+    updateItem(item, {
+      title: title.slice(0, 64),
+      detail: text.slice(title.length).trimStart().slice(0, 96),
+    });
+  };
   const handleEnter = (event, item) => {
     if (event.key !== "Enter") return;
     event.preventDefault();
+    commitItem(item, event.currentTarget);
     addAfter(item);
   };
   const moveCursorToEnd = (event) => {
-    const input = event.currentTarget;
-    requestAnimationFrame(() =>
-      input.setSelectionRange(input.value.length, input.value.length),
-    );
+    const editor = event.currentTarget;
+    requestAnimationFrame(() => {
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(editor);
+      range.collapse(false);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    });
   };
 
   return (
@@ -253,41 +266,28 @@ function Highlights({ t }) {
                 aria-hidden="true"
               />
             </button>
-            <div className="reminder-copy">
-              <input
+            <div
                 ref={(node) =>
                   node
                     ? inputRefs.current.set(item.id, node)
                     : inputRefs.current.delete(item.id)
                 }
-                className="reminder-title-input"
-                value={item.title}
-                size={Math.max(1, item.title.length)}
-                placeholder={t.newReminder}
-                aria-label={item.title || t.newReminder}
-                onChange={(event) =>
-                  updateItem(item, "title", event.target.value)
-                }
+                className="reminder-copy"
+                contentEditable
+                suppressContentEditableWarning
+                role="textbox"
+                aria-multiline="false"
+                aria-label={`${item.title} ${item.detail}`.trim() || t.newReminder}
+                data-placeholder={t.newReminder}
                 onFocus={moveCursorToEnd}
                 onClick={moveCursorToEnd}
                 onKeyDown={(event) => handleEnter(event, item)}
-                maxLength={64}
-              />
-              {item.detail && (
-                <input
-                  className="reminder-detail-input"
-                  value={item.detail}
-                  aria-label={item.detail}
-                  onChange={(event) =>
-                    updateItem(item, "detail", event.target.value)
-                  }
-                  onFocus={moveCursorToEnd}
-                  onClick={moveCursorToEnd}
-                  onKeyDown={(event) => handleEnter(event, item)}
-                  maxLength={96}
-                />
-              )}
-            </div>
+                onBlur={(event) => commitItem(item, event.currentTarget)}
+              >
+                {item.title && <b>{item.title}</b>}
+                {item.title && item.detail ? " " : ""}
+                {item.detail}
+              </div>
           </li>
         ))}
       </ul>
