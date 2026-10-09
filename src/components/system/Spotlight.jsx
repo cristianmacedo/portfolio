@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import projects from "../../data/projects";
 import SfSymbol from "../ui/SfSymbol";
 
@@ -181,7 +182,7 @@ export default function Spotlight({
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       className={`spotlight${hasQuery ? " has-results" : ""}${position ? " is-positioned" : ""}`}
       ref={shellRef}
@@ -249,6 +250,7 @@ export default function Spotlight({
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
