@@ -98,6 +98,18 @@ export default function Spotlight({
   }, [onClose, open]);
 
   useEffect(() => {
+    if (!open) return undefined;
+
+    const closeOutside = (event) => {
+      if (shellRef.current?.contains(event.target) || event.target.closest?.(".spotlight-trigger")) return;
+      onClose();
+    };
+
+    document.addEventListener("pointerdown", closeOutside, true);
+    return () => document.removeEventListener("pointerdown", closeOutside, true);
+  }, [onClose, open]);
+
+  useEffect(() => {
     const keepInViewport = () => {
       if (!position || !shellRef.current) return;
       const rect = shellRef.current.getBoundingClientRect();

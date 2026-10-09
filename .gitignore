@@ -1,6 +1,10 @@
 node_modules/
+dist/
 react-dist/
 legacy-static/
 .vscode/
 .DS_Store
 **/.DS_Store
+temp.json
+Joyland_Lore_Template.json
+examples/
