@@ -21,7 +21,7 @@ export default function Journey({ t }) {
     { date: "2018 — 2020", duration: t.degreeDate, company: t.university, place: "São Paulo", role: t.degree, summary: t.degreeCopy, education: t.educationNote },
   ];
   return <section className="journey-section page-section" aria-labelledby="journey">
-    <SectionHeading id="journey" title={t.journeyTitle} caption={t.journeyCaption} />
+    <SectionHeading id="journey" title={t.journeyTitle} />
     <section className="card timeline-card"><div className="timeline-intro"><span className="eyebrow">{t.timelineLabel}</span><Rich as="h3" html={t.timelineHeading} /><p>{t.timelineIntro}</p></div><ol className="timeline">{entries.map((entry) => <TimelineEntry key={entry.company} {...entry} />)}</ol></section>
   </section>;
 }

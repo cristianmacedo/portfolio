@@ -2915,3 +2915,42 @@ dialog.about-portfolio-dialog[open] {
     margin-top: 32px;
   }
 }
+
+/* The current-work card carries a single identity line; its three areas are
+   concise columns, rather than another layer of cards. */
+.featured .card-top {
+  justify-content: flex-start;
+}
+.featured .work-scope {
+  gap: 0;
+  margin: 28px 0 24px;
+  border-block: 1px solid var(--separator);
+}
+.featured .work-scope > div {
+  min-height: 0;
+  padding: 16px 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.featured .work-scope > div + div {
+  border-left: 1px solid var(--separator);
+}
+.featured .work-scope > div > p {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.hero-bottom {
+  justify-content: flex-start;
+}
+@media (max-width: 650px) {
+  .featured .work-scope {
+    grid-template-columns: 1fr;
+  }
+  .featured .work-scope > div + div {
+    border-top: 1px solid var(--separator);
+    border-left: 0;
+  }
+}

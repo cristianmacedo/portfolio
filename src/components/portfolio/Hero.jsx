@@ -30,9 +30,6 @@ export default function Hero({ t }) {
       </div>
       <div className="hero-bottom">
         <span>{t.based}</span>
-        <span>
-          React <i>·</i> TypeScript <i>·</i> Microfrontends
-        </span>
       </div>
     </section>
   );

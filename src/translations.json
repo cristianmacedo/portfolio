@@ -133,7 +133,8 @@
     "themeLight": "Switch to light theme",
     "themeDark": "Switch to dark theme",
     "copyLabel": "Copy email address",
-    "languageLabel": "Mudar para português"
+    "languageLabel": "Mudar para português",
+    "workMeta": "MERCADO LIVRE · CURRENT"
   },
   "pt": {
     "skip": "Ir para os trabalhos",
@@ -269,6 +270,7 @@
     "themeLight": "Mudar para tema claro",
     "themeDark": "Mudar para tema escuro",
     "copyLabel": "Copiar endereço de email",
-    "languageLabel": "Switch to English"
+    "languageLabel": "Switch to English",
+    "workMeta": "MERCADO LIVRE · ATUAL"
   }
 }
