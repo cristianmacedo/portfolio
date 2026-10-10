@@ -13,6 +13,7 @@ import SystemBar from "./components/system/SystemBar";
 import useActiveSection from "./hooks/useActiveSection";
 import useGlassReflection from "./hooks/useGlassReflection";
 import useMemojiPreload from "./hooks/useMemojiPreload";
+import useWidgetLayout from "./hooks/useWidgetLayout";
 import { readStorage } from "./utils/storage";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
   );
   const [detailOpen, setDetailOpen] = useState(false);
   const activeSection = useActiveSection();
+  const { layout, isEditing, getWidgetProps, finishEditing } = useWidgetLayout();
   const t = translations[language];
 
   useMemojiPreload();
@@ -118,9 +120,14 @@ export default function App() {
       />
       <div className="shell">
         <main>
-          <div className="top-grid">
+          <div className="top-grid" data-layout-editing={isEditing || undefined}>
             <Hero t={t} />
-            <HighlightsRail t={t} />
+            <HighlightsRail t={t} layout={layout} getWidgetProps={getWidgetProps} />
+            {isEditing && (
+              <button className="layout-done" type="button" onClick={finishEditing}>
+                {t.layoutDone}
+              </button>
+            )}
           </div>
           <WorkSection t={t} onDetails={() => setDetailOpen(true)} />
           <Projects t={t} />

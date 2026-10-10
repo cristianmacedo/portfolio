@@ -3028,7 +3028,8 @@ dialog.about-portfolio-dialog[open] {
 }
 
 /* The reminder is a standalone widget, just like every app shortcut. */
-.top-grid > .reminders-widget {
+.top-grid > .reminders-widget,
+.layout-drag-preview.reminders-widget {
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -3036,32 +3037,39 @@ dialog.about-portfolio-dialog[open] {
   padding: 12px 16px 8px;
   border-radius: 22px;
 }
-.top-grid > .reminders-widget .reminders-header {
+.top-grid > .reminders-widget .reminders-header,
+.layout-drag-preview.reminders-widget .reminders-header {
   flex: 0 0 auto;
   margin: 0;
   padding: 0 0 8px;
   border-bottom-color: rgba(255, 255, 255, 0.38);
 }
-.top-grid > .reminders-widget .reminders-header strong {
+.top-grid > .reminders-widget .reminders-header strong,
+.layout-drag-preview.reminders-widget .reminders-header strong {
   font-size: 32px;
 }
-.top-grid > .reminders-widget .reminders-header span:not(.reminders-app-icon) {
+.top-grid > .reminders-widget .reminders-header span:not(.reminders-app-icon),
+.layout-drag-preview.reminders-widget .reminders-header span:not(.reminders-app-icon) {
   margin-top: 1px;
   font-size: 15px;
 }
-.top-grid > .reminders-widget .reminders-app-icon {
+.top-grid > .reminders-widget .reminders-app-icon,
+.layout-drag-preview.reminders-widget .reminders-app-icon {
   width: 31px;
   height: 31px;
 }
-.top-grid > .reminders-widget .reminders-list {
+.top-grid > .reminders-widget .reminders-list,
+.layout-drag-preview.reminders-widget .reminders-list {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
 }
-.top-grid > .reminders-widget .reminders-list li {
+.top-grid > .reminders-widget .reminders-list li,
+.layout-drag-preview.reminders-widget .reminders-list li {
   min-height: 0;
 }
-.top-grid > .reminders-widget .reminders-list li > div {
+.top-grid > .reminders-widget .reminders-list li > div,
+.layout-drag-preview.reminders-widget .reminders-list li > div {
   padding: 7px 0;
   font-size: 12px;
   line-height: 1.25;
@@ -3071,7 +3079,8 @@ dialog.about-portfolio-dialog[open] {
 }
 
 /* The restored Apple-clock experiment occupies four regular cells. */
-.top-grid > .clock-widget {
+.top-grid > .clock-widget,
+.layout-drag-preview.clock-widget {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
@@ -3085,6 +3094,56 @@ dialog.about-portfolio-dialog[open] {
   background: var(--clock-face);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/* Holding a widget enables this temporary arrangement mode. The grid remains
+   the source of truth, so every drop still obeys the widget's 1×1 or 2×2 size. */
+.top-grid[data-layout-editing] > [data-widget-id] {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  -webkit-user-drag: none;
+  outline: 1px solid rgba(244, 137, 82, 0.58);
+  outline-offset: 3px;
+  transition: transform 160ms ease, opacity 160ms ease, outline-color 160ms ease;
+}
+.top-grid[data-layout-editing] > [data-widget-id] :is(a, button, [contenteditable="true"]) {
+  pointer-events: none;
+}
+.top-grid[data-layout-editing] > [data-widget-id].is-layout-dragging {
+  cursor: grabbing;
+  opacity: 0.22;
+}
+.layout-drag-preview {
+  position: fixed !important;
+  z-index: 100;
+  margin: 0 !important;
+  pointer-events: none !important;
+  will-change: transform;
+  transform: translate3d(var(--drag-x, 0), var(--drag-y, 0), 0) scale(1.025) !important;
+  transform-origin: top left;
+  transition: none !important;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.3));
+}
+.layout-done {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 20;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  color: #19191b;
+  background: #f5f5f7;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  font: inherit;
+  font-weight: 700;
+}
+.light .layout-done {
+  color: #fff;
+  background: #292a2e;
 }
 .clock-widget .ios-clock-widget {
   width: 100%;
@@ -3115,7 +3174,8 @@ dialog.about-portfolio-dialog[open] {
     grid-column: span 8;
     grid-row: span 4;
   }
-  .top-grid > .reminders-widget {
+  .top-grid > .reminders-widget,
+  .layout-drag-preview.reminders-widget {
     grid-column: span 2;
     grid-row: span 2;
     height: auto;
@@ -3148,7 +3208,8 @@ dialog.about-portfolio-dialog[open] {
     grid-row: span 2;
     height: auto;
   }
-  .top-grid > .reminders-widget {
+  .top-grid > .reminders-widget,
+  .layout-drag-preview.reminders-widget {
     grid-column: span 2;
     grid-row: span 2;
     height: auto;
@@ -3181,7 +3242,8 @@ dialog.about-portfolio-dialog[open] {
     grid-row: auto;
     height: auto;
   }
-  .top-grid > .reminders-widget {
+  .top-grid > .reminders-widget,
+  .layout-drag-preview.reminders-widget {
     grid-column: span 2;
     grid-row: span 2;
     width: auto;
@@ -3190,29 +3252,36 @@ dialog.about-portfolio-dialog[open] {
     aspect-ratio: auto;
     padding: 10px 12px 7px;
   }
-  .top-grid > .reminders-widget .reminders-header {
+  .top-grid > .reminders-widget .reminders-header,
+  .layout-drag-preview.reminders-widget .reminders-header {
     padding-bottom: 6px;
   }
-  .top-grid > .reminders-widget .reminders-header strong {
+  .top-grid > .reminders-widget .reminders-header strong,
+  .layout-drag-preview.reminders-widget .reminders-header strong {
     font-size: 27px;
   }
-  .top-grid > .reminders-widget .reminders-header span:not(.reminders-app-icon) {
+  .top-grid > .reminders-widget .reminders-header span:not(.reminders-app-icon),
+  .layout-drag-preview.reminders-widget .reminders-header span:not(.reminders-app-icon) {
     font-size: 13px;
   }
-  .top-grid > .reminders-widget .reminders-app-icon {
+  .top-grid > .reminders-widget .reminders-app-icon,
+  .layout-drag-preview.reminders-widget .reminders-app-icon {
     width: 26px;
     height: 26px;
   }
-  .top-grid > .reminders-widget .reminders-list li > div {
+  .top-grid > .reminders-widget .reminders-list li > div,
+  .layout-drag-preview.reminders-widget .reminders-list li > div {
     padding: 5px 0;
     font-size: 10px;
     line-height: 1.2;
   }
-  .top-grid > .reminders-widget .reminder-check {
+  .top-grid > .reminders-widget .reminder-check,
+  .layout-drag-preview.reminders-widget .reminder-check {
     width: 17px;
     height: 17px;
   }
-  .top-grid > .reminders-widget .reminder-check::after {
+  .top-grid > .reminders-widget .reminder-check::after,
+  .layout-drag-preview.reminders-widget .reminder-check::after {
     width: 8px;
     height: 8px;
   }

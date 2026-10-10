@@ -23,7 +23,8 @@ function readEditor(element) {
   };
 }
 
-export default function Highlights({ t }) {
+export default function Highlights({ t, widgetProps = {} }) {
+  const { className: widgetClassName, ...widgetEvents } = widgetProps;
   const defaults = [
     { id: "years", title: "7+", detail: t.years, position: 1 },
     { id: "big-techs", title: t.bigTechsMark, detail: t.bigTechs, position: 2 },
@@ -119,7 +120,13 @@ export default function Highlights({ t }) {
   };
 
   return (
-    <section className="proof-strip reminders-widget" aria-label={t.highlightsLabel}>
+    <section
+      {...widgetEvents}
+      className={["proof-strip", "reminders-widget", widgetClassName]
+        .filter(Boolean)
+        .join(" ")}
+      aria-label={t.highlightsLabel}
+    >
       <div className="reminders-header">
         <div>
           <strong>{items.length}</strong>
@@ -147,8 +154,14 @@ export default function Highlights({ t }) {
               aria-multiline="false"
               aria-label={`${item.title} ${item.detail}`.trim() || t.newReminder}
               data-placeholder={t.newReminder}
-              onFocus={(event) => requestAnimationFrame(() => setCaretToEnd(event.currentTarget))}
-              onClick={(event) => requestAnimationFrame(() => setCaretToEnd(event.currentTarget))}
+              onFocus={(event) => {
+                const element = event.currentTarget;
+                requestAnimationFrame(() => setCaretToEnd(element));
+              }}
+              onClick={(event) => {
+                const element = event.currentTarget;
+                requestAnimationFrame(() => setCaretToEnd(element));
+              }}
               onKeyDown={(event) => handleItemEnter(event, item)}
               onBlur={(event) => commitItem(item, event.currentTarget)}
             >
@@ -182,31 +195,31 @@ export default function Highlights({ t }) {
   );
 }
 
-function SocialApps() {
+function SocialApp({ name, href, widgetProps = {} }) {
+  const { className: widgetClassName, ...widgetEvents } = widgetProps;
   return (
-    <nav className="social-apps" aria-label="Social profiles">
-      <a
-        className="social-app social-app-github"
-        href="https://github.com/cristianmacedo"
-        target="_blank"
-        rel="noopener"
-        aria-label="GitHub"
-      >
-        <BrandIcon name="github" />
-      </a>
-      <a
-        className="social-app social-app-linkedin"
-        href="https://www.linkedin.com/in/cristianmacedo"
-        target="_blank"
-        rel="noopener"
-        aria-label="LinkedIn"
-      >
-        <BrandIcon name="linkedin" />
-      </a>
-    </nav>
+    <a
+      {...widgetEvents}
+      className={["social-app", `social-app-${name}`, widgetClassName]
+        .filter(Boolean)
+        .join(" ")}
+      href={href}
+      target="_blank"
+      rel="noopener"
+      aria-label={name === "github" ? "GitHub" : "LinkedIn"}
+    >
+      <BrandIcon name={name} />
+    </a>
   );
 }
 
-export function HighlightsRail({ t }) {
-  return <><Highlights t={t} /><SocialApps /><LocalClock t={t} /></>;
+export function HighlightsRail({ t, layout, getWidgetProps }) {
+  const widgets = {
+    reminders: <Highlights key="reminders" t={t} widgetProps={getWidgetProps("reminders")} />,
+    github: <SocialApp key="github" name="github" href="https://github.com/cristianmacedo" widgetProps={getWidgetProps("github")} />,
+    linkedin: <SocialApp key="linkedin" name="linkedin" href="https://www.linkedin.com/in/cristianmacedo" widgetProps={getWidgetProps("linkedin")} />,
+    clock: <LocalClock key="clock" t={t} widgetProps={getWidgetProps("clock")} />,
+  };
+
+  return layout.map((id) => widgets[id]);
 }

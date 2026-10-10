@@ -79,13 +79,20 @@ function mountAppleClock(container) {
   };
 }
 
-export default function LocalClock({ t }) {
+export default function LocalClock({ t, widgetProps = {} }) {
   const clockRef = useRef(null);
+  const { className: widgetClassName, ...widgetEvents } = widgetProps;
 
   useEffect(() => mountAppleClock(clockRef.current), []);
 
   return (
-    <article className="proof-strip clock-widget" aria-label={t.localLabel}>
+    <article
+      {...widgetEvents}
+      className={["proof-strip", "clock-widget", widgetClassName]
+        .filter(Boolean)
+        .join(" ")}
+      aria-label={t.localLabel}
+    >
       <section className="ios-clock-widget" aria-hidden="true">
         <div className="ac-fill">
           <div
