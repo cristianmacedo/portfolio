@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import BrandIcon from "../ui/BrandIcon";
+import LocalClock from "./LocalClock";
 
 const hasContent = ({ title, detail }) =>
   Boolean(title.trim() || detail.trim());
@@ -180,6 +182,31 @@ export default function Highlights({ t }) {
   );
 }
 
+function SocialApps() {
+  return (
+    <nav className="social-apps" aria-label="Social profiles">
+      <a
+        className="social-app social-app-github"
+        href="https://github.com/cristianmacedo"
+        target="_blank"
+        rel="noopener"
+        aria-label="GitHub"
+      >
+        <BrandIcon name="github" />
+      </a>
+      <a
+        className="social-app social-app-linkedin"
+        href="https://www.linkedin.com/in/cristianmacedo"
+        target="_blank"
+        rel="noopener"
+        aria-label="LinkedIn"
+      >
+        <BrandIcon name="linkedin" />
+      </a>
+    </nav>
+  );
+}
+
 export function HighlightsRail({ t }) {
-  return <aside className="top-widgets" aria-label={t.highlightsLabel}><Highlights t={t} /></aside>;
+  return <><Highlights t={t} /><SocialApps /><LocalClock t={t} /></>;
 }

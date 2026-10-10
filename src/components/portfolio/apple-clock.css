@@ -1,0 +1,307 @@
+.ios-clock-widget {
+  background: black;
+}
+
+.ac-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.ac-clock {
+  position: absolute;
+  opacity: 1;
+  left: 50%;
+  top: 50%;
+}
+
+.ac-centre {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.ac-expand {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.ac-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.ac-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.ac-round {
+  border-radius: 296px;
+}
+
+.ac-circle-1 {
+  width: 6px;
+  height: 6px;
+  border: 3px solid white;
+}
+
+.ac-circle-2 {
+  width: 4px;
+  height: 4px;
+  border: 2px solid #FA9F22;
+}
+
+.ac-second {
+  transform: rotate(180deg);
+}
+
+.ac-minute {
+  transform: rotate(54deg);
+}
+
+.ac-second-hand {
+  width: 2px;
+  background: #FA9F22;
+}
+
+.ac-second-hand-front {
+  width: 2px;
+  height: 137px;
+  background: #FA9F22;
+  transform: translate(-50%, -100%) translateY(-3px);
+}
+
+.ac-second-hand-back {
+  width: 2px;
+  height: 21px;
+  background: #FA9F22;
+  opacity: 1;
+  transform: translate(-50%, -100%) translateY(24px);
+}
+
+.ac-hour {
+  transform: rotate(304.5deg);
+}
+
+.ac-thin-hand {
+  width: 4px;
+  height: 50px;
+  background: white;
+  transform: translate(-50%, -100%) translateY(-5px);
+}
+
+.ac-fat-hand {
+  box-sizing: border-box;
+  width: 10px;
+  height: 57px;
+  border-radius: 10px;
+  background: white;
+  transform: translate(-50%, -100%) translateY(-18px);
+}
+
+.ac-minute-hand {
+  height: 112px;
+}
+
+.ac-minute-line {
+  background: white;
+  width: 1px;
+  height: 9px;
+  transform: translate(-50%, -100%) translateY(-131px);
+  opacity: 0.34;
+}
+
+.ac-major.ac-minute-line {
+  opacity: 0.5;
+}
+
+.ac-minute-text {
+  font: 12px Avenir Next, Helvetica;
+  color: white;
+  top: -135px;
+}
+
+.ac-hour-pill {
+  background: white;
+  width: 6px;
+  height: 35px;
+  border-radius: 10px;
+  transform: translate(-50%, -100%) translateY(-85px);
+  opacity: 0.75;
+}
+
+.ac-hour-text {
+  font: 40px Hei, Helvetica;
+  color: white;
+  top: -105px;
+}
+
+.ac-hour-10 .ac-content {
+  padding-left: 0.4ex;
+}
+
+.ac-hour-11 .ac-content {
+  padding-left: 0.25ex;
+}
+
+.ac-hour-style-text .ac-hour-pill {
+  opacity: 0;
+}
+
+.ac-hour-style-pill .ac-hour-text {
+  opacity: 0;
+}
+
+.ac-hour-style-text-quarters .ac-hour-1.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-2.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-3.ac-hour-pill,
+.ac-hour-style-text-quarters .ac-hour-4.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-5.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-6.ac-hour-pill,
+.ac-hour-style-text-quarters .ac-hour-7.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-8.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-9.ac-hour-pill,
+.ac-hour-style-text-quarters .ac-hour-10.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-11.ac-hour-text,
+.ac-hour-style-text-quarters .ac-hour-12.ac-hour-pill {
+  opacity: 0;
+}
+
+.ac-hour-text-style-small .ac-hour-text {
+  font-size: 24px;
+  top: -113px;
+}
+
+.ac-hour-display-style-quarters .ac-hour-1,
+.ac-hour-display-style-quarters .ac-hour-2,
+.ac-hour-display-style-quarters .ac-hour-4,
+.ac-hour-display-style-quarters .ac-hour-5,
+.ac-hour-display-style-quarters .ac-hour-7,
+.ac-hour-display-style-quarters .ac-hour-8,
+.ac-hour-display-style-quarters .ac-hour-10,
+.ac-hour-display-style-quarters .ac-hour-11 {
+  opacity: 0;
+}
+
+.ac-hour-display-style-none .ac-hour-item {
+  opacity: 0;
+}
+
+.ac-minute-style-dot .ac-minute-line {
+  width: 6px;
+  height: 6px;
+  transform: translate(-50%, -100%) translateY(-134px);
+  border-radius: 6px;
+  opacity: 0.75;
+}
+
+.ac-minute-style-dot .ac-part.ac-minute-line,
+.ac-minute-style-dot.ac-hour-style-pill .ac-major.ac-minute-line {
+  opacity: 0;
+}
+
+.ac-minute-style-dot .ac-hour-pill {
+  transform: translate(-50%, -100%) translateY(-100px);
+  height: 40px;
+}
+
+.ac-minute-text-style-inside .ac-major.ac-minute-line {
+  opacity: 0;
+}
+
+.ac-minute-text-style-outside .ac-minute-text {
+  top: -152px;
+  font-size: 14px;
+}
+
+.ac-minute-text-style-none .ac-minute-text {
+  opacity: 0;
+}
+
+.ac-minute-style-line.ac-minute-display-style-fine-2 .ac-whole.ac-minute-line,
+.ac-minute-style-line.ac-minute-display-style-fine-2 .ac-major.ac-minute-line {
+  height: 13px;
+  transform: translate(-50%, -100%) translateY(-127px);
+}
+
+.ac-minute-style-line.ac-minute-display-style-fine-2 .ac-part.ac-minute-line {
+  height: 8px;
+  transform: translate(-50%, -100%) translateY(-132px);
+}
+
+.ac-minute-display-style-coarse .ac-part.ac-minute-line {
+  opacity: 0;
+}
+
+.ac-minute-display-style-major .ac-part.ac-minute-line,
+.ac-minute-display-style-major .ac-whole.ac-minute-line {
+  opacity: 0;
+}
+
+.ac-minute-display-style-none .ac-part.ac-minute-line,
+.ac-minute-display-style-none .ac-major.ac-major.ac-minute-line,
+.ac-minute-display-style-none .ac-whole.ac-minute-line {
+  opacity: 0;
+}
+
+.ac-hand-style-hollow .ac-fat-hand {
+  background: black;
+  border: 2px solid white;
+}
+
+#chooser {
+  font: 10px Verdana, sans-serif;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  color: white;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+#chooser div {
+  cursor: pointer;
+}
+
+#chooser div:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* The CodePen customizer stays available in code, but hidden in the portfolio widget. */
+#chooser { display: none; }
+
+.ios-clock-widget {
+  width: 100%;
+  max-width: 270px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  filter: drop-shadow(0 22px 35px rgba(0, 0, 0, .32));
+}
+
+.light .ios-clock-widget {
+  filter: drop-shadow(0 22px 30px rgba(61, 47, 39, .24));
+}
+
+@media (max-width: 900px) {
+  .ios-clock-widget { max-width: 230px; }
+}
+
+@media (max-width: 650px) {
+  .ios-clock-widget { max-width: 270px; margin: 0 auto; }
+}
