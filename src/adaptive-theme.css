@@ -3081,20 +3081,24 @@ dialog.about-portfolio-dialog[open] {
   padding: 0;
   overflow: hidden;
   border-radius: 22px;
+  --clock-face: #242528;
+  background: var(--clock-face);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 .clock-widget .ios-clock-widget {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   max-width: none;
   align-self: stretch;
   justify-self: stretch;
   aspect-ratio: auto;
   border-radius: inherit;
-  background: #242528;
+  background: transparent;
   filter: none;
 }
-.light .clock-widget .ios-clock-widget {
-  background: #e6e7e9;
+.light .top-grid > .clock-widget {
+  --clock-face: #e6e7e9;
 }
 
 /* Widgets are direct sibling grid items. Their span is the only placement
@@ -3222,6 +3226,6 @@ dialog.about-portfolio-dialog[open] {
     grid-column: span 2;
     grid-row: span 2;
     height: auto;
-    padding: 8px 10px;
+    padding: 0;
   }
 }

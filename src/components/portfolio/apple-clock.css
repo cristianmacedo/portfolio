@@ -51,15 +51,19 @@
 }
 
 .ac-circle-1 {
-  width: 6px;
-  height: 6px;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
   border: 3px solid white;
+  background: var(--clock-face, #242528);
 }
 
 .ac-circle-2 {
-  width: 4px;
-  height: 4px;
-  border: 2px solid #FA9F22;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #FA9F22;
+  background: var(--clock-face, #242528);
 }
 
 .ac-second {
@@ -256,8 +260,8 @@
 }
 
 .ac-hand-style-hollow .ac-fat-hand {
-  background: black;
-  border: 2px solid white;
+  background: white;
+  border: 0;
 }
 
 #chooser {

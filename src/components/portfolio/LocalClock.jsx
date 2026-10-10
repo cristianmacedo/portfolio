@@ -57,15 +57,20 @@ function mountAppleClock(container) {
   };
   animate();
 
+  const surface = container.closest(".ios-clock-widget");
+  const widget = container.closest(".clock-widget");
   const resize = () => {
-    const parent = container.offsetParent;
-    if (!parent) return;
-    const scale = Math.min(parent.offsetWidth, parent.offsetHeight) / 327;
+    const bounds = surface?.getBoundingClientRect();
+    const fallbackBounds = widget?.getBoundingClientRect();
+    const width = bounds?.width || fallbackBounds?.width || 0;
+    const height = bounds?.height || fallbackBounds?.height || 0;
+    if (!width || !height) return;
+    const scale = Math.min(width, height) / 327;
     container.style.transform = container.style.webkitTransform = `scale(${scale.toFixed(3)})`;
   };
   const observer = new ResizeObserver(resize);
-  if (container.offsetParent) observer.observe(container.offsetParent);
-  resize();
+  if (surface) observer.observe(surface);
+  requestAnimationFrame(resize);
 
   return () => {
     cancelAnimationFrame(animationFrame);
