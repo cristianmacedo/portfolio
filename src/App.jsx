@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import translations from "./translations.json";
 import Hero from "./components/portfolio/Hero";
 import WorkSection from "./components/portfolio/WorkSection";
@@ -151,6 +152,7 @@ export default function App() {
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
       />
+      <Analytics />
     </>
   );
 }

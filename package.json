@@ -10,10 +10,10 @@
     "icons:sf": "npx sf-symbols-svg --weight regular --icons-list scripts/sf-symbols-icons.txt --output public/assets/sf-symbols"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
     "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {}
+    "react-dom": "latest",
+    "vite": "latest"
+  }
 }
