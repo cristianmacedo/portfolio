@@ -30,6 +30,7 @@ function ProjectDialog({ project, t, onClose }) {
 export default function Projects({ t }) {
   const railRef = useRef(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const openProject = (project) => setSelectedProject(project);
   const move = (direction) => {
     const rail = railRef.current;
     if (!rail) return;
@@ -41,10 +42,15 @@ export default function Projects({ t }) {
     <div className="project-carousel-shell">
       <div className="project-carousel" ref={railRef} aria-label={t.projectsCarousel}>
         <div className="project-carousel-gutter" aria-hidden="true" />
-        {projects.map((project) => <article className="project-showcase-card" key={project.id}>
+        {projects.map((project) => <article className="project-showcase-card card-action" key={project.id} role="button" tabIndex={0} aria-label={`${t.openProject}: ${project.name}`} onClick={() => openProject(project)} onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openProject(project);
+          }
+        }}>
           <img src={`${import.meta.env.BASE_URL}assets/projects/${project.image}`} alt="" loading="lazy" />
           <div className="project-showcase-copy"><span>{t[project.category]}</span><h3>{project.name}</h3><p>{t[project.copy]}</p></div>
-          <button className="project-open" type="button" aria-label={`${t.openProject}: ${project.name}`} onClick={() => setSelectedProject(project)}><SfSymbol name="plus" /></button>
+          <span className="project-open" aria-hidden="true"><SfSymbol name="plus" /></span>
         </article>)}
       </div>
       <div className="project-carousel-controls" aria-label={t.carouselControls}>

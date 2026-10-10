@@ -2,21 +2,22 @@ import SfSymbol from "../ui/SfSymbol";
 import Rich from "./Rich";
 import SectionHeading from "./SectionHeading";
 
+function activateWithKeyboard(event, action) {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    action();
+  }
+}
+
 export default function WorkSection({ t, onDetails }) {
   return (
     <section className="work-section page-section" aria-labelledby="work">
       <SectionHeading id="work" title={t.selectedWork} />
       <div className="bento">
-        <article className="card featured">
-          <div className="card-top"><span className="eyebrow">{t.workMeta}</span></div>
+        <article className="card featured card-action" role="button" tabIndex={0} aria-label={t.insideWork} onClick={onDetails} onKeyDown={(event) => activateWithKeyboard(event, onDetails)}>
+          <div className="card-top"><span className="eyebrow">{t.workMeta}</span><span className="featured-open" aria-hidden="true"><SfSymbol name="arrow.up.right" /></span></div>
           <Rich as="h3" html={t.foundationTitle} />
           <p>{t.foundationCopy}</p>
-          <div className="work-scope">
-            <div><span>{t.scopeProduct}</span><p>{t.scopeProductCopy}</p></div>
-            <div><span>{t.scopePlatform}</span><p>{t.scopePlatformCopy}</p></div>
-            <div><span>{t.scopeTeam}</span><p>{t.scopeTeamCopy}</p></div>
-          </div>
-          <button className="card-link" onClick={onDetails}><span>{t.insideWork}</span><SfSymbol name="arrow.up.right" /></button>
         </article>
         <aside className="card now">
           <div className="card-top"><span className="eyebrow">{t.currentLabel}</span></div>

@@ -2916,41 +2916,46 @@ dialog.about-portfolio-dialog[open] {
   }
 }
 
-/* The current-work card carries a single identity line; its three areas are
-   concise columns, rather than another layer of cards. */
+/* Interactive cards share one click target instead of competing nested controls. */
+.card-action {
+  cursor: pointer;
+}
+.card-action:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
 .featured .card-top {
-  justify-content: flex-start;
+  justify-content: space-between;
 }
-.featured .work-scope {
-  gap: 0;
-  margin: 28px 0 24px;
-  border-block: 1px solid var(--separator);
+.featured-open {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--orange);
+  transition: transform 0.18s ease;
 }
-.featured .work-scope > div {
-  min-height: 0;
-  padding: 16px 18px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
+.featured-open .sf-symbol {
+  width: 20px;
+  height: 20px;
 }
-.featured .work-scope > div + div {
-  border-left: 1px solid var(--separator);
-}
-.featured .work-scope > div > p {
-  margin-top: 6px;
-  font-size: 14px;
-  line-height: 1.45;
+.card-action:hover .featured-open {
+  transform: translate(2px, -2px);
 }
 .hero-bottom {
   justify-content: flex-start;
 }
-@media (max-width: 650px) {
-  .featured .work-scope {
-    grid-template-columns: 1fr;
-  }
-  .featured .work-scope > div + div {
-    border-top: 1px solid var(--separator);
-    border-left: 0;
-  }
+
+/* Keep pointer-reactive reflections present but quieter across all glass surfaces. */
+.card::before,
+.proof-strip::before {
+  opacity: 0.24;
+}
+.control-tile::before,
+.focus-toggle::before {
+  opacity: 0.42;
+}
+.brand-menu::before,
+.spotlight::before {
+  opacity: 0.4;
 }
