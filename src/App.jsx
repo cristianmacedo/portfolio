@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import translations from "./translations.json";
 import Hero from "./components/portfolio/Hero";
 import WorkSection from "./components/portfolio/WorkSection";
@@ -153,6 +154,7 @@ export default function App() {
         onClose={() => setDetailOpen(false)}
       />
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }
