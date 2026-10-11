@@ -1,5 +1,6 @@
 /* Adaptive appearance: semantic tokens keep both themes consistent and legible. */
 :root {
+  --app-icon-corner-radius: 26.171875%;
   --separator: rgba(255, 255, 255, 0.17);
   --subtle-text: #aaa9a8;
   --decorative-line: #76665b;
@@ -1335,7 +1336,7 @@ header.system-bar::before {
 }
 .system-bar-layer,
 .system-bar-layer.control-center-open {
-  z-index: 2147483647;
+  z-index: 1000;
 }
 header.system-bar,
 .light header.system-bar {
@@ -2688,6 +2689,91 @@ dialog.about-portfolio-dialog[open] {
   animation: spotlight-enter-positioned 0.2s cubic-bezier(0.2, 0.75, 0.2, 1)
     both;
 }
+.terminal-window {
+  position: fixed;
+  top: max(84px, 16vh);
+  left: 50%;
+  width: min(720px, calc(100vw - 16px));
+  height: min(440px, calc(100dvh - 32px));
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 15px;
+  color: #f4f4f5;
+  background: #242424;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+  transform: translateX(-50%);
+  animation: terminal-window-enter 0.2s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+.terminal-window.is-positioned {
+  transform: none;
+  animation: none;
+}
+.terminal-titlebar {
+  height: 50px;
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) 108px;
+  align-items: center;
+  padding: 0 14px;
+  background: linear-gradient(#3a3a3a, #303030);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.terminal-titlebar:active { cursor: grabbing; }
+.terminal-window-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.terminal-window-controls > * {
+  width: 13px;
+  height: 13px;
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+}
+.terminal-close { background: #ff5f57; }
+.terminal-minimize { background: #febc2e; }
+.terminal-zoom { background: #28c840; }
+.terminal-titlebar p {
+  margin: 0;
+  overflow: hidden;
+  color: #d6d6d8;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.2px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.terminal-titlebar p > span { margin-right: 7px; }
+.terminal-content {
+  min-height: calc(100% - 50px);
+  padding: 18px 16px;
+  background: #242424;
+  font: 500 16px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.terminal-content p { margin: 0; }
+.terminal-content span { color: #f5f5f5; }
+.terminal-content b { color: #f5f5f5; font-weight: 600; }
+.terminal-content i {
+  display: inline-block;
+  width: 9px;
+  height: 19px;
+  margin-left: 5px;
+  vertical-align: -4px;
+  background: #dadadd;
+  animation: terminal-caret 1s steps(1, end) infinite;
+}
+@keyframes terminal-window-enter {
+  from { opacity: 0; transform: translateX(-50%) scale(0.96); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+@keyframes terminal-caret {
+  50% { opacity: 0; }
+}
 .spotlight.has-results {
   border-radius: 24px;
 }
@@ -2844,6 +2930,15 @@ dialog.about-portfolio-dialog[open] {
 }
 
 @media (max-width: 650px) {
+  .terminal-window {
+    top: 62px;
+    width: calc(100vw - 24px);
+    height: min(420px, calc(100dvh - 86px));
+  }
+  .terminal-titlebar {
+    grid-template-columns: 80px minmax(0, 1fr) 80px;
+  }
+  .terminal-titlebar p { font-size: 13px; }
   .spotlight {
     top: 62px;
     width: calc(100vw - 24px);
@@ -2875,7 +2970,9 @@ dialog.about-portfolio-dialog[open] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spotlight {
+  .spotlight,
+  .terminal-window,
+  .terminal-content i {
     animation: none;
   }
 }
@@ -2972,7 +3069,7 @@ dialog.about-portfolio-dialog[open] {
   min-width: 0;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: clamp(20px, 20%, 28px);
+  border-radius: var(--app-icon-corner-radius);
   color: #fff;
   isolation: isolate;
   box-shadow:
@@ -3095,6 +3192,60 @@ dialog.about-portfolio-dialog[open] {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
+.top-grid > .memoji-widget,
+.layout-drag-preview.memoji-widget {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  background: rgba(215, 111, 61, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 14px 30px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+}
+.light .top-grid > .memoji-widget,
+.light .layout-drag-preview.memoji-widget {
+  background: rgba(239, 157, 111, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 14px 30px rgba(35, 28, 24, 0.1);
+}
+.memoji-widget .portrait-sprite {
+  align-self: end;
+  width: 110%;
+  height: 110%;
+  background-position: center bottom;
+  transform-origin: center bottom;
+  transform: none;
+}
+.memoji-widget:hover .portrait-sprite {
+  transform: none;
+}
+.top-grid > .terminal-app,
+.layout-drag-preview.terminal-app {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--app-icon-corner-radius);
+  background: #1c1c1e;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
+}
+.terminal-app img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.top-grid > .hero {
+  grid-template-columns: minmax(0, 1fr);
+}
 
 /* Holding a widget enables this temporary arrangement mode. The grid remains
    the source of truth, so every drop still obeys the widget's 1×1 or 2×2 size. */
@@ -3107,6 +3258,33 @@ dialog.about-portfolio-dialog[open] {
   outline: 1px solid rgba(244, 137, 82, 0.58);
   outline-offset: 3px;
   transition: transform 160ms ease, opacity 160ms ease, outline-color 160ms ease;
+  transform-origin: center;
+  animation: widget-jiggle 156ms ease-in-out infinite alternate;
+}
+.top-grid[data-layout-editing] > [data-widget-id="github"] {
+  animation-duration: 138ms;
+  animation-delay: -86ms;
+}
+.top-grid[data-layout-editing] > [data-widget-id="linkedin"] {
+  animation-duration: 172ms;
+  animation-delay: -121ms;
+}
+.top-grid[data-layout-editing] > [data-widget-id="clock"] {
+  animation-duration: 149ms;
+  animation-delay: -38ms;
+}
+.top-grid[data-layout-editing] > [data-widget-id="memoji"] {
+  animation-duration: 164ms;
+  animation-delay: -104ms;
+}
+.top-grid[data-layout-editing] > [data-widget-id="terminal"] {
+  animation-duration: 143ms;
+  animation-delay: -71ms;
+}
+.top-grid > [data-widget-id].is-layout-pressing {
+  filter: brightness(0.88) saturate(0.96);
+  transform: scale(0.985) !important;
+  transition: transform 120ms ease-out, filter 120ms ease-out;
 }
 .top-grid[data-layout-editing] > [data-widget-id] :is(a, button, [contenteditable="true"]) {
   pointer-events: none;
@@ -3114,6 +3292,18 @@ dialog.about-portfolio-dialog[open] {
 .top-grid[data-layout-editing] > [data-widget-id].is-layout-dragging {
   cursor: grabbing;
   opacity: 0.22;
+  animation: none;
+  rotate: 0deg;
+}
+@keyframes widget-jiggle {
+  from { rotate: -0.55deg; }
+  to { rotate: 0.55deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .top-grid[data-layout-editing] > [data-widget-id] {
+    animation: none;
+    rotate: 0deg;
+  }
 }
 .layout-drag-preview {
   position: fixed !important;
@@ -3121,10 +3311,15 @@ dialog.about-portfolio-dialog[open] {
   margin: 0 !important;
   pointer-events: none !important;
   will-change: transform;
-  transform: translate3d(var(--drag-x, 0), var(--drag-y, 0), 0) scale(1.025) !important;
+  --drag-scale: 0.985;
+  translate: var(--drag-x, 0) var(--drag-y, 0);
+  scale: var(--drag-scale);
   transform-origin: top left;
-  transition: none !important;
-  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.3));
+  transition: scale 180ms cubic-bezier(0.2, 0.85, 0.25, 1) !important;
+  filter: brightness(1) drop-shadow(0 24px 30px rgba(0, 0, 0, 0.34));
+}
+.layout-drag-preview.is-layout-lifted {
+  --drag-scale: 1.055;
 }
 .layout-done {
   position: fixed;
@@ -3166,13 +3361,13 @@ dialog.about-portfolio-dialog[open] {
   .top-grid {
     --top-unit: calc((100cqi - 9 * var(--flow-gap)) / 10);
     grid-template-columns: repeat(10, minmax(0, 1fr));
-    grid-template-rows: repeat(4, var(--top-unit));
+    grid-template-rows: repeat(6, var(--top-unit));
     grid-auto-rows: var(--top-unit);
     grid-auto-flow: row dense;
   }
   .top-grid > .hero {
     grid-column: span 8;
-    grid-row: span 4;
+    grid-row: span 3;
   }
   .top-grid > .reminders-widget,
   .layout-drag-preview.reminders-widget {
@@ -3182,13 +3377,20 @@ dialog.about-portfolio-dialog[open] {
     min-height: 0;
     aspect-ratio: auto;
   }
-  .top-grid > .social-app {
+  .top-grid > .social-app,
+  .top-grid > .terminal-app {
     grid-column: span 1;
     grid-row: span 1;
     width: auto;
     height: auto;
   }
   .top-grid > .clock-widget {
+    grid-column: span 2;
+    grid-row: span 2;
+    height: auto;
+  }
+  .top-grid > .memoji-widget,
+  .layout-drag-preview.memoji-widget {
     grid-column: span 2;
     grid-row: span 2;
     height: auto;
@@ -3216,13 +3418,20 @@ dialog.about-portfolio-dialog[open] {
     min-height: 0;
     aspect-ratio: auto;
   }
-  .top-grid > .social-app {
+  .top-grid > .social-app,
+  .top-grid > .terminal-app {
     grid-column: span 1;
     grid-row: span 1;
     width: auto;
     height: auto;
   }
   .top-grid > .clock-widget {
+    grid-column: span 2;
+    grid-row: span 2;
+    height: auto;
+  }
+  .top-grid > .memoji-widget,
+  .layout-drag-preview.memoji-widget {
     grid-column: span 2;
     grid-row: span 2;
     height: auto;
@@ -3285,7 +3494,8 @@ dialog.about-portfolio-dialog[open] {
     width: 8px;
     height: 8px;
   }
-  .top-grid > .social-app {
+  .top-grid > .social-app,
+  .top-grid > .terminal-app {
     grid-column: span 1;
     grid-row: span 1;
     width: auto;
@@ -3296,5 +3506,11 @@ dialog.about-portfolio-dialog[open] {
     grid-row: span 2;
     height: auto;
     padding: 0;
+  }
+  .top-grid > .memoji-widget,
+  .layout-drag-preview.memoji-widget {
+    grid-column: span 2;
+    grid-row: span 2;
+    height: auto;
   }
 }

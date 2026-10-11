@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import BrandIcon from "../ui/BrandIcon";
 import LocalClock from "./LocalClock";
+import MemojiWidget from "./MemojiWidget";
 
 const hasContent = ({ title, detail }) =>
   Boolean(title.trim() || detail.trim());
@@ -213,12 +214,33 @@ function SocialApp({ name, href, widgetProps = {} }) {
   );
 }
 
-export function HighlightsRail({ t, layout, getWidgetProps }) {
+function TerminalApp({ t, widgetProps = {}, onOpen }) {
+  const { className: widgetClassName, onClick: onWidgetClick, ...widgetEvents } = widgetProps;
+  return (
+    <button
+      {...widgetEvents}
+      type="button"
+      className={["terminal-app", widgetClassName].filter(Boolean).join(" ")}
+      aria-label={t.terminalLabel}
+      onClick={(event) => {
+        onWidgetClick?.(event);
+        if (!event.defaultPrevented) onOpen();
+      }}
+    >
+      <img src={`${import.meta.env.BASE_URL}assets/terminal.png`} alt="" />
+    </button>
+  );
+}
+
+export function HighlightsRail({ t, layout, getWidgetProps, hero, onOpenTerminal }) {
   const widgets = {
+    hero,
     reminders: <Highlights key="reminders" t={t} widgetProps={getWidgetProps("reminders")} />,
     github: <SocialApp key="github" name="github" href="https://github.com/cristianmacedo" widgetProps={getWidgetProps("github")} />,
     linkedin: <SocialApp key="linkedin" name="linkedin" href="https://www.linkedin.com/in/cristianmacedo" widgetProps={getWidgetProps("linkedin")} />,
+    terminal: <TerminalApp key="terminal" t={t} widgetProps={getWidgetProps("terminal")} onOpen={onOpenTerminal} />,
     clock: <LocalClock key="clock" t={t} widgetProps={getWidgetProps("clock")} />,
+    memoji: <MemojiWidget key="memoji" t={t} widgetProps={getWidgetProps("memoji")} />,
   };
 
   return layout.map((id) => widgets[id]);

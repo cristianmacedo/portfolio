@@ -1,9 +1,14 @@
 import SfSymbol from "../ui/SfSymbol";
 import Rich from "./Rich";
 
-export default function Hero({ t }) {
+export default function Hero({ t, widgetProps = {} }) {
+  const { className: widgetClassName, ...widgetEvents } = widgetProps;
+
   return (
-    <section className="hero card">
+    <section
+      {...widgetEvents}
+      className={["hero", "card", widgetClassName].filter(Boolean).join(" ")}
+    >
       <div className="hero-copy">
         <Rich as="h1" html={t.heroTitle} />
         <p className="intro">{t.heroIntro}</p>
@@ -19,17 +24,6 @@ export default function Hero({ t }) {
         >
           {t.resume}
         </a>
-      </div>
-      <div className="portrait">
-        <div className="orbit" />
-        <span className="portrait-sprite" role="img" aria-label={t.avatarAlt} />
-        <span className="portrait-note">
-          <span>{t.hello}</span>
-          <SfSymbol name="asterisk" />
-        </span>
-      </div>
-      <div className="hero-bottom">
-        <span>{t.based}</span>
       </div>
     </section>
   );

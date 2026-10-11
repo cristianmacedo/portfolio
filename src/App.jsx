@@ -10,6 +10,8 @@ import Utility from "./components/portfolio/Utility";
 import DetailDialog from "./components/portfolio/DetailDialog";
 import { HighlightsRail } from "./components/portfolio/Highlights";
 import SystemBar from "./components/system/SystemBar";
+import TerminalWindow from "./components/system/TerminalWindow";
+import { WindowManagerProvider } from "./components/system/WindowManager";
 import useActiveSection from "./hooks/useActiveSection";
 import useGlassReflection from "./hooks/useGlassReflection";
 import useMemojiPreload from "./hooks/useMemojiPreload";
@@ -33,6 +35,7 @@ export default function App() {
     () => readStorage("portfolio-focus", "false") === "true",
   );
   const [detailOpen, setDetailOpen] = useState(false);
+  const [terminalOpen, setTerminalOpen] = useState(false);
   const activeSection = useActiveSection();
   const { layout, isEditing, getWidgetProps, finishEditing } = useWidgetLayout();
   const t = translations[language];
@@ -101,8 +104,13 @@ export default function App() {
     else update();
   };
 
+  const closeTerminal = () => {
+    setTerminalOpen(false);
+    requestAnimationFrame(() => document.querySelector('.top-grid > [data-widget-id="terminal"]')?.focus());
+  };
+
   return (
-    <>
+    <WindowManagerProvider>
       <a className="skip" href="#work">
         {t.skip}
       </a>
@@ -117,12 +125,18 @@ export default function App() {
         }
         onTheme={changeTheme}
         onFocus={changeFocus}
+        onOpenTerminal={() => setTerminalOpen(true)}
       />
       <div className="shell">
         <main>
           <div className="top-grid" data-layout-editing={isEditing || undefined}>
-            <Hero t={t} />
-            <HighlightsRail t={t} layout={layout} getWidgetProps={getWidgetProps} />
+            <HighlightsRail
+              t={t}
+              layout={layout}
+              getWidgetProps={getWidgetProps}
+              onOpenTerminal={() => setTerminalOpen(true)}
+              hero={<Hero key="hero" t={t} widgetProps={getWidgetProps("hero")} />}
+            />
             {isEditing && (
               <button className="layout-done" type="button" onClick={finishEditing}>
                 {t.layoutDone}
@@ -160,8 +174,9 @@ export default function App() {
         open={detailOpen}
         onClose={() => setDetailOpen(false)}
       />
+      <TerminalWindow open={terminalOpen} onClose={closeTerminal} returnFocus={() => document.querySelector('.top-grid > [data-widget-id="terminal"]')?.focus()} />
       <Analytics />
       <SpeedInsights />
-    </>
+    </WindowManagerProvider>
   );
 }

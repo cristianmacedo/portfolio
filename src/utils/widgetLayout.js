@@ -1,9 +1,12 @@
 export const WIDGET_LAYOUT_STORAGE_KEY = "portfolio-widget-layout";
 export const DEFAULT_WIDGET_LAYOUT = [
+  "hero",
   "reminders",
   "github",
   "linkedin",
+  "terminal",
   "clock",
+  "memoji",
 ];
 
 export function isValidWidgetLayout(value) {

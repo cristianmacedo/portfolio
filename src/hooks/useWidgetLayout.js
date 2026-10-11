@@ -39,6 +39,7 @@ export default function useWidgetLayout() {
   const [layout, setLayout] = useState(readWidgetLayout);
   const [isEditing, setIsEditing] = useState(false);
   const [draggedId, setDraggedId] = useState(null);
+  const [pressedId, setPressedId] = useState(null);
   const widgetNodes = useRef(new Map());
   const press = useRef(null);
   const activeDrag = useRef(null);
@@ -52,9 +53,11 @@ export default function useWidgetLayout() {
   }, [layout]);
 
   const clearPress = useCallback(() => {
-    if (!press.current) return;
-    window.clearTimeout(press.current.timer);
-    press.current = null;
+    if (press.current) {
+      window.clearTimeout(press.current.timer);
+      press.current = null;
+    }
+    setPressedId(null);
   }, []);
 
   const removePreview = useCallback(() => {
@@ -88,6 +91,7 @@ export default function useWidgetLayout() {
     const rect = element.getBoundingClientRect();
     const dragPreview = element.cloneNode(true);
     dragPreview.classList.add("layout-drag-preview");
+    dragPreview.classList.remove("is-layout-pressing");
     dragPreview.removeAttribute("id");
     dragPreview.setAttribute("aria-hidden", "true");
     dragPreview.style.width = `${rect.width}px`;
@@ -97,6 +101,7 @@ export default function useWidgetLayout() {
     dragPreview.style.setProperty("--drag-x", "0px");
     dragPreview.style.setProperty("--drag-y", "0px");
     document.body.append(dragPreview);
+    requestAnimationFrame(() => dragPreview.classList.add("is-layout-lifted"));
     preview.current = dragPreview;
     activeDrag.current = {
       id,
@@ -204,6 +209,23 @@ export default function useWidgetLayout() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [finishEditing]);
 
+  useEffect(() => {
+    if (!isEditing) return undefined;
+
+    const dismissOnOutsidePress = (event) => {
+      if (activeDrag.current) return;
+      const target = event.target;
+      if (
+        target instanceof Element &&
+        target.closest("[data-widget-id], .layout-done, .layout-drag-preview")
+      ) return;
+      finishEditing();
+    };
+
+    document.addEventListener("pointerdown", dismissOnOutsidePress);
+    return () => document.removeEventListener("pointerdown", dismissOnOutsidePress);
+  }, [finishEditing, isEditing]);
+
   useEffect(() => () => {
     clearPress();
     removePreview();
@@ -219,6 +241,7 @@ export default function useWidgetLayout() {
       draggable: false,
       className: [
         isEditing && "is-layout-editable",
+        pressedId === id && "is-layout-pressing",
         draggedId === id && "is-layout-dragging",
       ].filter(Boolean).join(" "),
       onPointerDown: (event) => {
@@ -237,6 +260,7 @@ export default function useWidgetLayout() {
           return;
         }
 
+        setPressedId(id);
         press.current = {
           element,
           pointerId: event.pointerId,
@@ -246,6 +270,7 @@ export default function useWidgetLayout() {
             const activePress = press.current;
             if (!activePress) return;
             press.current = null;
+            setPressedId(null);
             beginDrag(
               activePress.element,
               { x: activePress.x, y: activePress.y },
@@ -271,7 +296,7 @@ export default function useWidgetLayout() {
         if (isEditing) event.preventDefault();
       },
     }),
-    [beginDrag, clearPress, draggedId, isEditing],
+    [beginDrag, clearPress, draggedId, isEditing, pressedId],
   );
 
   return { layout, isEditing, getWidgetProps, finishEditing };

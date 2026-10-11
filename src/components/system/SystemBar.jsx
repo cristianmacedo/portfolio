@@ -124,7 +124,7 @@ function useSystemClock(language) {
   return `${date} ${time}`;
 }
 
-export default function SystemBar({ t, language, isLight, focusMode, activeSection, onLanguage, onTheme, onFocus }) {
+export default function SystemBar({ t, language, isLight, focusMode, activeSection, onLanguage, onTheme, onFocus, onOpenTerminal }) {
   const [open, setOpen] = useState(false);
   const [brandMenuOpen, setBrandMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -212,7 +212,7 @@ export default function SystemBar({ t, language, isLight, focusMode, activeSecti
       </button>
     </div>}
     {open && <ControlCenter t={t} language={language} isLight={isLight} focusMode={focusMode} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} onClose={() => setOpen(false)} triggerRef={triggerRef} />}
-    <Spotlight language={language} isLight={isLight} focusMode={focusMode} open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} />
+    <Spotlight language={language} isLight={isLight} focusMode={focusMode} open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onLanguage={onLanguage} onTheme={onTheme} onFocus={onFocus} onOpenTerminal={onOpenTerminal} />
     <AboutPortfolioDialog language={language} open={aboutOpen} onClose={() => setAboutOpen(false)} />
   </div>;
 }
