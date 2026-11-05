@@ -1,0 +1,35 @@
+.personal-widget {
+  grid-column:span 2; grid-row:span 2; min-width:0; min-height:0;
+  display:block; position:relative; container-type:inline-size; padding:0; border:0;
+  border-radius:22px; overflow:hidden; text-align:left; color:#111; background:white;
+}
+.pw-face {position:absolute; inset:0; display:flex; flex-direction:column; padding:10%; font:500 8cqi/1.15 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.pw-calendar .pw-face>span {color:#ef554a;text-transform:capitalize}
+.pw-calendar strong {font-size:27cqi;font-weight:350;line-height:1}
+.pw-calendar .pw-face>div {margin-top:auto;border-left:1.4cqi solid #b34594;padding-left:4%}
+.pw-calendar small,.pw-notes small {display:block;color:#757575}
+.pw-calendar b {font-size:9cqi}
+.pw-music img {width:66%;aspect-ratio:1;border-radius:10%;object-fit:cover}
+.pw-music i {position:absolute;right:10%;top:8%;font:700 15cqi/1 sans-serif;color:#d76da2}
+.pw-music b {margin-top:auto;font-size:10cqi}
+.pw-music span {color:#c8007f;font-size:9cqi}
+.pw-notes {grid-column:span 4}
+.pw-notes .pw-face {padding:0;font-size:4.6cqi}
+.pw-notes strong {background:linear-gradient(135deg,#ffd321,#efc108);color:#443600;display:flex;align-items:center;padding-inline:5%;height:33%}
+.pw-notes .pw-face>div {flex:1;display:grid;align-content:center;padding-inline:5%}
+.pw-notes small {font-size:3.8cqi}
+.pw-activity {background:#111;color:white}
+.pw-activity .pw-face>span {color:#999}
+.pw-activity svg {width:100%;height:34%;margin:auto 0}
+.pw-activity strong {font-size:21cqi;font-weight:350}
+.pw-activity small {font-size:7cqi}
+.pw-photos img {position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pw-photos b {position:absolute;inset:auto 0 0;padding:22% 10% 10%;color:white;background:linear-gradient(transparent,#000b)}
+.pw-window {position:fixed;width:min(400px,calc(100vw - 24px));max-height:85vh;overflow:auto;background:var(--bg);color:var(--text);border-radius:18px;box-shadow:0 16px 50px #0005}
+.pw-bar {display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);cursor:grab;touch-action:none}
+.pw-bar button {border-radius:50%;background:#ec6765;color:#763433}
+.pw-window section {padding:16px}
+.pw-window section img {width:100%;border-radius:10px}
+.pw-notes strong {color:#fff;gap:2%}
+.pw-notes strong svg {width:8%;color:#fff4af}
+.pw-music i {background:linear-gradient(#ff5077,#6389fd);background-clip:text;color:transparent}

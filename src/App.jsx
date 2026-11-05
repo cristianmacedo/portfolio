@@ -131,6 +131,7 @@ export default function App() {
         <main>
           <div className="top-grid" data-layout-editing={isEditing || undefined}>
             <HighlightsRail
+              language={language}
               t={t}
               layout={layout}
               getWidgetProps={getWidgetProps}

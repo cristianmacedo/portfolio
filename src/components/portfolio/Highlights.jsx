@@ -1,3 +1,4 @@
+import PersonalWidget from "./PersonalWidget";
 import { useRef, useState } from "react";
 import BrandIcon from "../ui/BrandIcon";
 import LocalClock from "./LocalClock";
@@ -232,7 +233,7 @@ function TerminalApp({ t, widgetProps = {}, onOpen }) {
   );
 }
 
-export function HighlightsRail({ t, layout, getWidgetProps, hero, onOpenTerminal }) {
+export function HighlightsRail({ t, layout, getWidgetProps, hero, language, onOpenTerminal }) {
   const widgets = {
     hero,
     reminders: <Highlights key="reminders" t={t} widgetProps={getWidgetProps("reminders")} />,
@@ -243,5 +244,5 @@ export function HighlightsRail({ t, layout, getWidgetProps, hero, onOpenTerminal
     memoji: <MemojiWidget key="memoji" t={t} widgetProps={getWidgetProps("memoji")} />,
   };
 
-  return layout.map((id) => widgets[id]);
+  return layout.map((id) => widgets[id] ?? <PersonalWidget key={id} id={id} language={language} widgetProps={getWidgetProps(id)} />);
 }

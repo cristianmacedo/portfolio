@@ -1,5 +1,5 @@
 export const WIDGET_LAYOUT_STORAGE_KEY = "portfolio-widget-layout";
-export const DEFAULT_WIDGET_LAYOUT = [
+const originalWidgets = [
   "hero",
   "reminders",
   "github",
@@ -8,6 +8,9 @@ export const DEFAULT_WIDGET_LAYOUT = [
   "clock",
   "memoji",
 ];
+
+export const extraWidgets = ["calendar", "music", "notes", "activity", "photos"];
+export const DEFAULT_WIDGET_LAYOUT = [...originalWidgets, ...extraWidgets];
 
 export function isValidWidgetLayout(value) {
   return (
@@ -22,6 +25,7 @@ export function readWidgetLayout(storage = globalThis.localStorage) {
   try {
     const raw = storage?.getItem(WIDGET_LAYOUT_STORAGE_KEY);
     const layout = raw ? JSON.parse(raw) : null;
+    if (Array.isArray(layout) && layout.length === originalWidgets.length && originalWidgets.every(id => layout.includes(id))) return [...layout, ...extraWidgets];
     return isValidWidgetLayout(layout) ? layout : DEFAULT_WIDGET_LAYOUT;
   } catch {
     return DEFAULT_WIDGET_LAYOUT;

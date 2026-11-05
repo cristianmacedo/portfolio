@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
-  DEFAULT_WIDGET_LAYOUT,
+  DEFAULT_WIDGET_LAYOUT, extraWidgets,
   WIDGET_LAYOUT_STORAGE_KEY,
   moveWidgetToIndex,
   readWidgetLayout,
@@ -29,7 +29,7 @@ test("rejects malformed, duplicate, and incomplete saved orders", () => {
 
 test("saves and restores a valid order", () => {
   const memory = storage();
-  const layout = ["clock", "linkedin", "github", "reminders", "memoji", "hero", "terminal"];
+  const layout = ["clock", "linkedin", "github", "reminders", "memoji", "hero", "terminal", ...extraWidgets];
   assert.equal(saveWidgetLayout(layout, memory), true);
   assert.deepEqual(readWidgetLayout(memory), layout);
 });
@@ -37,11 +37,11 @@ test("saves and restores a valid order", () => {
 test("moves a widget to any insertion index without changing the other order", () => {
   assert.deepEqual(
     moveWidgetToIndex(DEFAULT_WIDGET_LAYOUT, "clock", 0),
-    ["clock", "hero", "reminders", "github", "linkedin", "terminal", "memoji"],
+    ["clock", "hero", "reminders", "github", "linkedin", "terminal", "memoji", ...extraWidgets],
   );
   assert.deepEqual(
     moveWidgetToIndex(DEFAULT_WIDGET_LAYOUT, "reminders", 3),
-    ["hero", "github", "linkedin", "reminders", "terminal", "clock", "memoji"],
+    ["hero", "github", "linkedin", "reminders", "terminal", "clock", "memoji", ...extraWidgets],
   );
 });
 
