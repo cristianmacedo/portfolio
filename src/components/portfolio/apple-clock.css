@@ -298,10 +298,6 @@
   filter: drop-shadow(0 22px 35px rgba(0, 0, 0, .32));
 }
 
-.light .ios-clock-widget {
-  filter: drop-shadow(0 22px 30px rgba(61, 47, 39, .24));
-}
-
 @media (max-width: 900px) {
   .ios-clock-widget { max-width: 230px; }
 }
