@@ -2394,55 +2394,6 @@ dialog.about-portfolio-dialog[open] {
   backdrop-filter: blur(18px) saturate(115%);
   -webkit-backdrop-filter: blur(18px) saturate(115%);
 }
-.about-window-controls {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  width: auto;
-  height: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.about-window-controls button,
-.about-window-controls span {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: #4a4a4c;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
-}
-.about-window-controls button {
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: 1px solid #763433;
-  background: #ec6765;
-}
-.about-window-controls button:hover {
-  filter: brightness(1.06);
-}
-.about-window-controls button .sf-symbol {
-  width: 11px;
-  height: 11px;
-  margin: auto;
-  color: #763433;
-  filter: drop-shadow(0.35px 0 0 #763433) drop-shadow(-0.35px 0 0 #763433)
-    drop-shadow(0 0.35px 0 #763433) drop-shadow(0 -0.35px 0 #763433);
-  opacity: 0;
-  transition: opacity 0.12s ease;
-}
-.about-window-controls button:hover .sf-symbol,
-.about-window-controls button:focus-visible .sf-symbol {
-  opacity: 1;
-}
-.about-window-controls button:focus-visible {
-  outline: 0;
-}
-.light .about-window-controls span {
-  background: #d0d0d3;
-}
 .about-portfolio-art {
   position: relative;
   width: 260px;
@@ -2594,16 +2545,6 @@ dialog.about-portfolio-dialog[open] {
     padding: 0 20px 24px;
     border-radius: 24px;
   }
-  .about-window-controls {
-    top: 12px;
-    left: 12px;
-    gap: 9px;
-  }
-  .about-window-controls button,
-  .about-window-controls span {
-    width: 15px;
-    height: 15px;
-  }
   .about-portfolio-art {
     width: 240px;
     height: 184px;
@@ -2721,22 +2662,6 @@ dialog.about-portfolio-dialog[open] {
   user-select: none;
 }
 .terminal-titlebar:active { cursor: grabbing; }
-.terminal-window-controls {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.terminal-window-controls > * {
-  width: 13px;
-  height: 13px;
-  display: block;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-}
-.terminal-close { background: #ff5f57; }
-.terminal-minimize { background: #febc2e; }
-.terminal-zoom { background: #28c840; }
 .terminal-titlebar p {
   margin: 0;
   overflow: hidden;
@@ -3520,3 +3445,18 @@ dialog.about-portfolio-dialog[open] {
 @media (max-width: 900px) {
   .top-grid { --flow-gap: 12px; gap: var(--flow-gap); }
 }
+
+/* One traffic-light strip for title bars and portfolio dialogs. */
+.window-controls {display:inline-flex; align-items:center; flex:none; cursor:default}
+.window-controls > :is(button,span) {
+  display:grid; place-items:center; width:23px; height:24px; padding:0;
+  border:0; border-radius:5px; background:transparent; box-shadow:none; filter:none;
+}
+.window-light {display:block; width:14px; height:14px}
+.window-light-symbol {opacity:0}
+.window-controls:is(:hover,:focus-within) .window-light-symbol {opacity:1}
+.window-controls button:active .window-light {filter:brightness(.85)}
+dialog:is(.about-portfolio-dialog,.project-dialog) > .window-controls {
+  position:absolute; z-index:2; top:9px; left:8px;
+}
+@media (hover:none) { .window-light-symbol {opacity:1} }

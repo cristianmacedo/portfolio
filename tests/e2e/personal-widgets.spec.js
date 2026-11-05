@@ -20,3 +20,14 @@ for(const width of [390,820,1440]){
   }
  });
 }
+
+test("notes shows macOS control symbols on hover and closes from the red light", async ({page}, testInfo) => {
+  await page.goto("/");
+  await page.locator('.top-grid > [data-widget-id="notes"]').click();
+  const strip = page.locator(".pw-window .window-controls");
+  await strip.hover();
+  await expect(strip.locator(".window-light-symbol").first()).toHaveCSS("opacity","1");
+  await strip.screenshot({path:testInfo.outputPath("notes-controls.png")});
+  await strip.getByRole("button").click();
+  await expect(page.locator(".pw-window")).toHaveCount(0);
+});

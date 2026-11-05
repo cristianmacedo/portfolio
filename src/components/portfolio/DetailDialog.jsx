@@ -1,5 +1,5 @@
+import WindowControls from "../ui/WindowControls";
 import { useEffect, useRef } from "react";
-import SfSymbol from "../ui/SfSymbol";
 
 export default function DetailDialog({ language, open, onClose }) {
   const dialogRef = useRef(null);
@@ -15,7 +15,7 @@ export default function DetailDialog({ language, open, onClose }) {
     eyebrow: "SELECTED EXPERIENCE / MERCADO LIVRE", title: "Product, platform, and technical leadership.", copy: "I lead frontend development for an internal tax management platform that supports more than $3B in monthly fiscal operations across Brazil and Argentina. The work spans frontend architecture, API contracts, shared foundations, and backend services in Go.", heading: "Where I contribute", bullets: ["Technical leadership: guide decisions, code quality, and mentoring across the frontend team.", "Shared foundations: created interface and authorization foundations adopted by multiple teams.", "Migrations: led the evolution of microfrontends and the transition to Mercado Livre’s new internal authentication system.", "Applied AI: built an internal plugin repository for reusable skills and integrations that helped accelerate the core tax-declaration capability by 50% in Q2 2026."]
   };
   return <dialog ref={dialogRef} onClose={onClose} onClick={(event) => { if (event.target === dialogRef.current) onClose(); }}>
-    <button className="close" aria-label="Close details" onClick={onClose}><SfSymbol name="xmark" /></button>
+    <WindowControls label={language === "pt" ? "Fechar detalhes" : "Close details"} onClose={onClose} />
     <div><span className="eyebrow">{content.eyebrow}</span><h2>{content.title}</h2><p>{content.copy}</p><h3>{content.heading}</h3><ul>{content.bullets.map((item) => <li key={item}>{item}</li>)}</ul><p className="eyebrow">REACT · TYPESCRIPT · GO · MICROFRONTENDS</p></div>
   </dialog>;
 }

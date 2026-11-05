@@ -1,3 +1,4 @@
+import WindowControls from "../ui/WindowControls";
 import { useEffect, useRef, useState } from "react";
 import SfSymbol from "../ui/SfSymbol";
 import projects from "../../data/projects";
@@ -13,7 +14,7 @@ function ProjectDialog({ project, t, onClose }) {
   }, [project]);
   if (!project) return <dialog ref={dialogRef} />;
   return <dialog className="project-dialog" ref={dialogRef} onClose={onClose} onClick={(event) => { if (event.target === dialogRef.current) onClose(); }}>
-    <button className="project-dialog-close" type="button" aria-label={t.closeProject} onClick={onClose}><SfSymbol name="xmark" /></button>
+    <WindowControls label={t.closeProject} onClose={onClose} />
     <div className="project-dialog-art"><img src={`${import.meta.env.BASE_URL}assets/projects/${project.image}`} alt="" /></div>
     <div className="project-dialog-copy">
       <span className="eyebrow">{t.personalProject}</span><h2>{project.name}</h2><p>{t[project.copy]}</p>

@@ -96,7 +96,7 @@ test("the terminal opens, stays open outside, drags, and returns focus on close"
   const after = await terminal.boundingBox();
   expect(after.x).toBeGreaterThan(before.x + 40);
 
-  await terminal.locator(".terminal-close").click();
+  await terminal.getByRole("button", {name:"Fechar Terminal"}).click();
   await expect(terminal).toHaveCount(0);
   await expect(widget(page, "terminal")).toBeFocused();
 });

@@ -1,5 +1,5 @@
+import WindowControls from "../ui/WindowControls";
 import { useEffect, useRef } from "react";
-import SfSymbol from "../ui/SfSymbol";
 
 export default function AboutPortfolioDialog({ language, open, onClose }) {
   const dialogRef = useRef(null);
@@ -54,13 +54,7 @@ export default function AboutPortfolioDialog({ language, open, onClose }) {
         if (event.target === dialogRef.current) onClose();
       }}
     >
-      <div className="about-window-controls">
-        <button type="button" onClick={onClose} aria-label={language === "pt" ? "Fechar" : "Close"}>
-          <SfSymbol name="xmark" />
-        </button>
-        <span aria-hidden="true" />
-        <span aria-hidden="true" />
-      </div>
+      <WindowControls label={language === "pt" ? "Fechar" : "Close"} onClose={onClose} />
 
       <div className="about-portfolio-art" aria-hidden="true">
         <div className="about-browser">
